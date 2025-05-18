@@ -12,6 +12,7 @@ import MonacoEditor from '@monaco-editor/react';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useTypeChecker } from '../hooks/useTypeChecker';
+import { getCsrfToken } from '../src/utils/csrf';
 
 export const TypeScriptEditor = () => {
   const [code, setCode] = useState<string>(`type User = ???;\nconst u: User = { name: "Taro", age: 20 };`);
@@ -20,16 +21,12 @@ export const TypeScriptEditor = () => {
 
   useEffect(() => {
     // ページロード時にCookieを確認
-    const checkCookies = () => {
-      const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-      // CSRFトークンが存在しない場合はエラーメッセージを表示
-      if (!cookies.some(cookie => cookie.startsWith('csrf-token='))) {
-        setCsrfError('CSRFトークンが見つかりません。ページを手動で再読み込みしてください。');
-      } else {
-        setCsrfError(null);
-      }
-    };
-    checkCookies();
+    const token = getCsrfToken();
+    if (!token) {
+      setCsrfError('CSRFトークンが見つかりません。ページを手動で再読み込みしてください。');
+    } else {
+      setCsrfError(null);
+    }
   }, []);
 
   const handleEditorChange = (value: string | undefined) => {
