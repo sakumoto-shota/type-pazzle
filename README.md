@@ -1,0 +1,81 @@
+# 🎮 TypeScript 型パズル ゲーム構想
+
+## ✅ 目的
+
+TypeScript の型システムを楽しく・実践的に学ぶための教育ゲームを作成する。
+
+- ユーティリティ型
+- 条件付き型
+- ジェネリクス
+- 型推論
+  など、実務でよく使う知識をクイズ形式で習得できる。
+
+---
+
+## 💡 ゲーム基本アイディア
+
+| 要素     | 内容                                                           |
+| -------- | -------------------------------------------------------------- |
+| 出題形式 | `???` を含むコードを提示し、型を完成させるクイズ形式           |
+| 回答方法 | ブラウザのエディタで型を記述し、「型チェック」ボタンで回答判定 |
+| 判定基準 | TypeScript 型チェックでエラーが出なければ正解                  |
+| 学習支援 | ヒント、解説、型エラーのハイライト表示などを予定               |
+
+---
+
+## 🧩 ステージ設計
+
+各レベルから 5 問ずつ出題
+クリアするごとに次のレベルへチャレンジできる
+
+### Lv1. 型の一致
+
+```ts
+type User = ???;
+const u: User = { name: "Taro", age: 20 };
+```
+
+### Lv2. ユーティリティ型の理解
+
+```ts
+type User = { name: string; age: number };
+type ReadonlyUser = ???; // → Readonly<User>
+```
+
+### Lv3. ジェネリクスの活用
+
+```ts
+function identity<T>(value: T): ???;
+const result = identity(123); // result: number
+```
+
+### Lv4. 条件付き型でフィルタ
+
+```ts
+type OnlyString<T> = ???;
+type R = OnlyString<string | number | boolean>; // → string
+```
+
+### Lv5. 型推論の活用
+
+```ts
+type GetReturnType<T> = ???;
+type R = GetReturnType<() => number>; // → number
+```
+
+## 技術スタック
+
+| 機能           | 技術候補                                                      |
+| -------------- | ------------------------------------------------------------- |
+| コードエディタ | Monaco Editor                                                 |
+| 型チェック     | TypeScript Compiler API (`ts.createProgram`)                  |
+| UI             | React + Next + shadcn/ui (`Card`, `Button`等)                 |
+| 実行方法       | 「型チェック」ボタンで実行 し結果欄に回答コメントが表示される |
+
+## ログイン
+
+- google 認証
+
+## データ保持
+
+firestore
