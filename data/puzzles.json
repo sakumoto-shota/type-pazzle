@@ -1,0 +1,54 @@
+{
+  "levels": [
+    {
+      "level": 1,
+      "puzzles": [
+        { "code": "type User = ???;\nconst u: User = { name: \"Taro\", age: 20 };" },
+        { "code": "type Point = ???;\nconst p: Point = { x: 1, y: 2 };" },
+        { "code": "const greet: ??? = (name: string) => `Hello, ${name}`;" },
+        { "code": "type Pair<T> = ???;\nconst pair: Pair<number> = [1, 2];" },
+        { "code": "interface Animal { name: string }\ninterface Dog extends ??? { bark(): void }" }
+      ]
+    },
+    {
+      "level": 2,
+      "puzzles": [
+        { "code": "type User = { name: string; age: number };\ntype ReadonlyUser = ???;" },
+        { "code": "type Options = { a?: string; b?: number };\ntype RequiredOptions = ???;" },
+        { "code": "type User = { name: string; age: number };\ntype PartialUser = ???;" },
+        { "code": "type User = { name: string; age: number };\ntype PickName = ???;" },
+        { "code": "type User = { name: string; age: number };\ntype RecordUser = ???;" }
+      ]
+    },
+    {
+      "level": 3,
+      "puzzles": [
+        { "code": "function identity<T>(value: T): ???;" },
+        { "code": "function wrapInArray<T>(value: T): ???;" },
+        { "code": "interface Box<T> { value: T }\nfunction makeBox<T>(v: T): ???;" },
+        { "code": "function first<T>(arr: T[]): ???;" },
+        { "code": "type Mapper<T, U> = ???;" }
+      ]
+    },
+    {
+      "level": 4,
+      "puzzles": [
+        { "code": "type OnlyString<T> = ???;\ntype R = OnlyString<string | number | boolean>;" },
+        { "code": "type IsString<T> = ???;\ntype R = IsString<'a'>;" },
+        { "code": "type ExcludeNull<T> = ???;\ntype R = ExcludeNull<string | null>;" },
+        { "code": "type IfElse<T, U> = ???;\ntype R = IfElse<true, number>;" },
+        { "code": "type Flatten<T> = ???;\ntype R = Flatten<string[]>;" }
+      ]
+    },
+    {
+      "level": 5,
+      "puzzles": [
+        { "code": "type GetReturnType<T> = ???;\ntype R = GetReturnType<() => number>;" },
+        { "code": "type UnpackArray<T> = ???;\ntype R = UnpackArray<string[]>;" },
+        { "code": "type Params<T> = ???;\ntype R = Params<(a: number, b: string) => void>;" },
+        { "code": "type InferBoxValue<T> = ???;\ntype R = InferBoxValue<{value: boolean}>;" },
+        { "code": "type ElementType<T> = ???;\ntype R = ElementType<NodeListOf<HTMLDivElement>>;" }
+      ]
+    }
+  ]
+}

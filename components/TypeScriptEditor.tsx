@@ -12,10 +12,18 @@ import MonacoEditor from '@monaco-editor/react';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useTypeChecker } from '../hooks/useTypeChecker';
+import puzzlesData from '../data/puzzles.json';
+
+type Puzzles = typeof puzzlesData.levels;
+
+const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
 
 export const TypeScriptEditor = () => {
-  const [code, setCode] = useState<string>(`type User = ???;\nconst u: User = { name: "Taro", age: 20 };`);
+  const [levelIndex, setLevelIndex] = useState(0);
+  const [puzzleIndex, setPuzzleIndex] = useState(0);
+  const [code, setCode] = useState<string>(levels[0].puzzles[0].code);
+  const [finished, setFinished] = useState(false);
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
 
@@ -29,6 +37,27 @@ export const TypeScriptEditor = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setCode(levels[levelIndex].puzzles[puzzleIndex].code);
+  }, [levelIndex, puzzleIndex]);
+
+  useEffect(() => {
+    if (result?.success) {
+      if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
+        setPuzzleIndex(puzzleIndex + 1);
+      } else if (levelIndex < levels.length - 1) {
+        setLevelIndex(levelIndex + 1);
+        setPuzzleIndex(0);
+      }
+      if (
+        levelIndex === levels.length - 1 &&
+        puzzleIndex === levels[levelIndex].puzzles.length - 1
+      ) {
+        setFinished(true);
+      }
+    }
+  }, [result]);
+
   const handleEditorChange = (value: string | undefined) => {
     setCode(value ?? '');
   };
@@ -40,7 +69,15 @@ export const TypeScriptEditor = () => {
   return (
     <Container maxW="container.md" py={8}>
       <VStack spacing={6} align="stretch">
-        <Heading size="lg">TypeScript 型パズル</Heading>
+        <Heading size="lg">
+          TypeScript 型パズル - Lv{levels[levelIndex].level} ({puzzleIndex + 1}/
+          {levels[levelIndex].puzzles.length})
+        </Heading>
+        {finished && (
+          <Alert status="success">
+            <AlertIcon />すべてのレベルをクリアしました！
+          </Alert>
+        )}
         {csrfError && (
           <Alert status="error">
             <AlertIcon />
@@ -68,7 +105,7 @@ export const TypeScriptEditor = () => {
             onClick={handleTypeCheck}
             size="lg"
             w="100%"
-            isDisabled={!!csrfError}
+            isDisabled={!!csrfError || finished}
           >
             型チェック
           </Button>
