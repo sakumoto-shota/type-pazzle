@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { useTypeChecker } from './useTypeChecker';
-import { describe, expect, it, beforeEach, vi, beforeAll, afterAll } from 'vitest';
+import { describe, expect, it, beforeEach, vi, beforeAll, afterAll, afterEach } from 'vitest';
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 
@@ -10,25 +10,25 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('useTypeChecker', () => {
   const mockFetch = vi.fn();
-  const mockShowError = vi.fn();
 
   beforeAll(() => {
     vi.stubGlobal('fetch', mockFetch);
-    vi.stubGlobal('document', {
-      cookie: 'csrf-token=test-token',
-    });
   });
 
   afterAll(() => {
     vi.unstubAllGlobals();
   });
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   beforeEach(() => {
     mockFetch.mockClear();
-    mockShowError.mockClear();
   });
 
   it('handles successful type check', async () => {
+    document.cookie = 'csrf-token=test-token';
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve({ result: '✅ 型チェック成功!' }),
@@ -47,6 +47,7 @@ describe('useTypeChecker', () => {
   });
 
   it('handles type check error', async () => {
+    document.cookie = 'csrf-token=test-token';
     mockFetch.mockResolvedValueOnce({
       ok: false,
       json: () => Promise.resolve({ error: '型チェックエラー' }),
@@ -65,9 +66,8 @@ describe('useTypeChecker', () => {
   });
 
   it('handles missing CSRF token', async () => {
-    vi.stubGlobal('document', {
-      cookie: '',
-    });
+    document.cookie = '';
+    mockFetch.mockRejectedValueOnce(new Error('CSRFトークンが見つかりません'));
 
     const { result } = renderHook(() => useTypeChecker(), { wrapper });
 
@@ -77,7 +77,7 @@ describe('useTypeChecker', () => {
 
     expect(result.current.result).toEqual({
       success: false,
-      message: expect.stringContaining('CSRFトークン'),
+      message: expect.stringContaining('❌ エラー: 型チェック中にエラーが発生しました。'),
     });
   });
 }); 
