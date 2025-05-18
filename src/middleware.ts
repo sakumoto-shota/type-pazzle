@@ -3,14 +3,19 @@ import { NextResponse } from "next/server";
 export function middleware() {
   const response = NextResponse.next();
   
-  // Web Crypto APIを使用してランダムな文字列を生成
-  const randomBytes = new Uint8Array(32);
-  crypto.getRandomValues(randomBytes);
-  const nonce = Array.from(randomBytes)
-    .map(b => b.toString(16).padStart(2, '0'))
+  // Edge Runtimeで動作するCSRFトークン生成
+  const randomBytes = new Uint8Array(16);
+  const csrfToken = Array.from(randomBytes)
+    .map(byte => byte.toString(16).padStart(2, '0'))
     .join('');
-  
-  response.headers.set('x-nonce', nonce);
+
+  response.cookies.set('csrf-token', csrfToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+  });
+
   return response;
 }
 
