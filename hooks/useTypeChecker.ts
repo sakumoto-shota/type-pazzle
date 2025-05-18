@@ -48,7 +48,11 @@ export const useTypeChecker = () => {
       // レスポンスのバリデーション
       const responseValidation = TypeCheckResponseSchema.safeParse(data);
       if (!responseValidation.success) {
-        setResult({ success: false, message: '❌ エラー: サーバーからの応答が不正です' });
+        if (typeof (data as { error?: unknown }).error === 'string') {
+          setResult({ success: false, message: `❌ エラー: ${(data as { error: string }).error}` });
+        } else {
+          setResult({ success: false, message: '❌ エラー: サーバーからの応答が不正です' });
+        }
         return;
       }
 

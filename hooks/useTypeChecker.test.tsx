@@ -61,7 +61,7 @@ describe('useTypeChecker', () => {
 
     expect(result.current.result).toEqual({
       success: false,
-      message: expect.stringContaining('エラー'),
+      message: '❌ エラー: 型チェック中にエラーが発生しました。',
     });
   });
 
@@ -77,7 +77,7 @@ describe('useTypeChecker', () => {
 
     expect(result.current.result).toEqual({
       success: false,
-      message: expect.stringContaining('❌ エラー: 型チェック中にエラーが発生しました。'),
+      message: '❌ エラー: 型チェック中にエラーが発生しました。',
     });
   });
 }); 
