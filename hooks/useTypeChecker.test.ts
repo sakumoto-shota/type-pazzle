@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import type { Mock } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTypeChecker } from './useTypeChecker';
 
 describe('useTypeChecker', () => {

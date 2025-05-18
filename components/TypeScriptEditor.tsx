@@ -1,6 +1,3 @@
-import React from 'react';
-import { useState } from 'react';
-import { useTypeChecker } from '../hooks/useTypeChecker';
 import {
   Box,
   Button,
@@ -10,10 +7,17 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import MonacoEditor from '@monaco-editor/react';
+import React from 'react';
+import { useState } from 'react';
+import { useTypeChecker } from '../hooks/useTypeChecker';
 
 export const TypeScriptEditor = () => {
   const [code, setCode] = useState<string>(`type User = ???;\nconst u: User = { name: "Taro", age: 20 };`);
   const { result, checkType } = useTypeChecker();
+
+  const handleEditorChange = (value: string | undefined) => {
+    setCode(value ?? '');
+  };
 
   return (
     <Container maxW="container.md" py={8}>
@@ -23,7 +27,7 @@ export const TypeScriptEditor = () => {
           <MonacoEditor
             language="typescript"
             value={code}
-            onChange={(value) => setCode(value || "")}
+            onChange={handleEditorChange}
             options={{
               automaticLayout: true,
               minimap: { enabled: false },
@@ -52,7 +56,7 @@ export const TypeScriptEditor = () => {
                 fontSize="sm"
                 m={0}
               >
-                {result}
+                {result.message}
               </Text>
             </Box>
           )}

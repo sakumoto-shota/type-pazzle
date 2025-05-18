@@ -1,9 +1,9 @@
-import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { TypeScriptEditor } from './TypeScriptEditor';
 import { ChakraProvider } from '@chakra-ui/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { TypeScriptEditor } from './TypeScriptEditor';
 
 // Monaco Editorのモック
 vi.mock('@monaco-editor/react', () => ({
@@ -11,7 +11,7 @@ vi.mock('@monaco-editor/react', () => ({
     <textarea
       data-testid="monaco-editor"
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => { onChange(e.target.value); }}
     />
   ),
 }));

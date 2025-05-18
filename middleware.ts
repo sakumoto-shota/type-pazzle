@@ -1,25 +1,21 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 import crypto from 'crypto';
+import { NextResponse } from 'next/server';
 
-const CSRF_SECRET = process.env.CSRF_SECRET || 'your-secret-key';
-
-export function middleware(request: NextRequest) {
+export function middleware() {
   const response = NextResponse.next();
-  
-  // トークンが存在しない場合は新規生成
-  if (!request.cookies.get('csrf-token')) {
-    const token = crypto.randomBytes(32).toString('hex');
-    response.cookies.set('csrf-token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-    });
-  }
-  
+
+  // CSRFトークンを生成してCookieに設定
+  const csrfToken = crypto.randomUUID();
+  response.cookies.set('csrf-token', csrfToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+  });
+
   return response;
 }
 
 export const config = {
-  matcher: ['/api/:path*'],
+  matcher: '/api/:path*',
 }; 

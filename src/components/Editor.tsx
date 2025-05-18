@@ -1,5 +1,5 @@
-import MonacoEditor from "react-monaco-editor";
 import { useState } from "react";
+import MonacoEditor from "react-monaco-editor";
 
 export default function Editor() {
   const [code, setCode] = useState<string>("");
@@ -8,7 +8,7 @@ export default function Editor() {
     <MonacoEditor
       language="typescript"
       value={code}
-      onChange={(value: string) => setCode(value)}
+      onChange={(value: string) => { setCode(value); }}
       options={{ automaticLayout: true }}
     />
   );

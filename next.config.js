@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+/** @type {NodeJS.Module} */
 const nextConfig = {
   reactStrictMode: true,
   webpack: (config) => {
