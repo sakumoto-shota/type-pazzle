@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import Editor from "@monaco-editor/react";
-import { useErrorToast } from "../hooks/useErrorToast";
+import { useState, useEffect } from 'react';
+import Editor from '@monaco-editor/react';
+import { useErrorToast } from '../hooks/useErrorToast';
+import { getCsrfToken } from '../utils/csrf';
 
 export default function CodeEditor() {
   const [code, setCode] = useState<string>("");
@@ -9,15 +10,10 @@ export default function CodeEditor() {
 
   useEffect(() => {
     // ページロード時にCSRFトークンを取得
-    const getCsrfToken = () => {
-      const cookies = document.cookie.split(';');
-      const csrfCookie = cookies.find(cookie => cookie.trim().startsWith('csrf-token='));
-      if (csrfCookie) {
-        const token = csrfCookie.split('=')[1];
-        setCsrfToken(token);
-      }
-    };
-    getCsrfToken();
+    const token = getCsrfToken();
+    if (token) {
+      setCsrfToken(token);
+    }
   }, []);
 
   const handleTypeCheck = async () => {
