@@ -61,7 +61,7 @@ describe('useTypeChecker', () => {
 
     expect(result.current.result).toEqual({
       success: false,
-      message: expect.stringContaining('エラー'),
+      message: '❌ エラー: 型チェックエラー',
     });
   });
 
