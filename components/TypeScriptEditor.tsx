@@ -73,6 +73,9 @@ export const TypeScriptEditor = () => {
           TypeScript 型パズル - Lv{levels[levelIndex].level} ({puzzleIndex + 1}/
           {levels[levelIndex].puzzles.length})
         </Heading>
+        <Text fontSize="md" color="gray.600">
+          {levels[levelIndex].puzzles[puzzleIndex].explanation}
+        </Text>
         {finished && (
           <Alert status="success">
             <AlertIcon />すべてのレベルをクリアしました！
