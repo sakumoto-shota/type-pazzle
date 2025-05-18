@@ -7,6 +7,7 @@ import {
   VStack,
   Alert,
   AlertIcon,
+  HStack,
 } from '@chakra-ui/react';
 import MonacoEditor from '@monaco-editor/react';
 import React from 'react';
@@ -26,6 +27,20 @@ export const TypeScriptEditor = () => {
   const [finished, setFinished] = useState(false);
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
+  const [scores, setScores] = useState<number[]>(
+    new Array(levels.length).fill(0)
+  );
+
+  const goToNext = () => {
+    if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
+      setPuzzleIndex((p) => p + 1);
+    } else if (levelIndex < levels.length - 1) {
+      setLevelIndex((l) => l + 1);
+      setPuzzleIndex(0);
+    } else {
+      setFinished(true);
+    }
+  };
 
   useEffect(() => {
     // ページロード時にCookieを確認
@@ -43,18 +58,12 @@ export const TypeScriptEditor = () => {
 
   useEffect(() => {
     if (result?.success) {
-      if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
-        setPuzzleIndex(puzzleIndex + 1);
-      } else if (levelIndex < levels.length - 1) {
-        setLevelIndex(levelIndex + 1);
-        setPuzzleIndex(0);
-      }
-      if (
-        levelIndex === levels.length - 1 &&
-        puzzleIndex === levels[levelIndex].puzzles.length - 1
-      ) {
-        setFinished(true);
-      }
+      setScores((prev) => {
+        const arr = [...prev];
+        arr[levelIndex] = Math.min(arr[levelIndex] + 20, 100);
+        return arr;
+      });
+      goToNext();
     }
   }, [result]);
 
@@ -66,6 +75,10 @@ export const TypeScriptEditor = () => {
     await checkType(code);
   };
 
+  const handleSkip = () => {
+    goToNext();
+  };
+
   return (
     <Container maxW="container.md" py={8}>
       <VStack spacing={6} align="stretch">
@@ -73,6 +86,11 @@ export const TypeScriptEditor = () => {
           TypeScript 型パズル - Lv{levels[levelIndex].level} ({puzzleIndex + 1}/
           {levels[levelIndex].puzzles.length})
         </Heading>
+        <Box>
+          {scores.map((s, i) => (
+            <Text key={i}>Lv{i + 1}: {s} / 100</Text>
+          ))}
+        </Box>
         <Text fontSize="md" color="gray.600">
           {levels[levelIndex].puzzles[puzzleIndex].explanation}
         </Text>
@@ -103,15 +121,24 @@ export const TypeScriptEditor = () => {
           />
         </Box>
         <Box>
-          <Button
-            colorScheme="blue"
-            onClick={handleTypeCheck}
-            size="lg"
-            w="100%"
-            isDisabled={!!csrfError || finished}
-          >
-            型チェック
-          </Button>
+          <HStack spacing={4}>
+            <Button
+              colorScheme="blue"
+              onClick={handleTypeCheck}
+              size="lg"
+              isDisabled={!!csrfError || finished}
+            >
+              型チェック
+            </Button>
+            <Button
+              colorScheme="gray"
+              onClick={handleSkip}
+              size="lg"
+              isDisabled={finished}
+            >
+              次の問題へ
+            </Button>
+          </HStack>
           {result && (
             <Box mt={4} p={4} bg="gray.50" borderRadius="md">
               <Text

@@ -15,5 +15,7 @@ describe('TypeScriptEditor', () => {
     expect(
       screen.getByText('User型はnameとageを持つオブジェクト型を完成させます。')
     ).toBeInTheDocument();
+    expect(screen.getByText('次の問題へ')).toBeInTheDocument();
+    expect(screen.getByText('Lv1: 0 / 100')).toBeInTheDocument();
   });
 });
