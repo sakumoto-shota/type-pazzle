@@ -17,6 +17,7 @@ import puzzlesData from '../data/puzzles.json';
 type Puzzles = typeof puzzlesData.levels;
 
 const levels: Puzzles = puzzlesData.levels;
+import { getCsrfToken } from '../src/utils/csrf';
 
 export const TypeScriptEditor = () => {
   const [levelIndex, setLevelIndex] = useState(0);
@@ -28,16 +29,12 @@ export const TypeScriptEditor = () => {
 
   useEffect(() => {
     // ページロード時にCookieを確認
-    const checkCookies = () => {
-      const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-      // CSRFトークンが存在しない場合はエラーメッセージを表示
-      if (!cookies.some(cookie => cookie.startsWith('csrf-token='))) {
-        setCsrfError('CSRFトークンが見つかりません。ページを手動で再読み込みしてください。');
-      } else {
-        setCsrfError(null);
-      }
-    };
-    checkCookies();
+    const token = getCsrfToken();
+    if (!token) {
+      setCsrfError('CSRFトークンが見つかりません。ページを手動で再読み込みしてください。');
+    } else {
+      setCsrfError(null);
+    }
   }, []);
 
   useEffect(() => {

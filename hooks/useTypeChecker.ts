@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useErrorToast } from '../src/hooks/useErrorToast';
 import { TypeCheckRequestSchema, TypeCheckResponseSchema } from '../types/validation';
+import { getCsrfToken } from '../src/utils/csrf';
 
 type TypeCheckResult = {
   success: boolean;
@@ -21,14 +22,11 @@ export const useTypeChecker = () => {
       }
 
       // CSRFトークンの取得
-      const cookies = document.cookie.split(';');
-      const csrfCookie = cookies.find(cookie => cookie.trim().startsWith('csrf-token='));
-      if (!csrfCookie) {
+      const csrfToken = getCsrfToken();
+      if (!csrfToken) {
         setResult({ success: false, message: '❌ エラー: CSRFトークンが見つかりません。ページを再読み込みしてください。' });
         return;
       }
-
-      const csrfToken = csrfCookie.split('=')[1].trim();
 
       const res = await fetch('/api/typecheck', {
         method: 'POST',
