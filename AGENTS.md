@@ -2,11 +2,13 @@
 
 ## 開発環境のヒント
 
-- Node.js v20 以上が必要です
-- 依存関係のインストール: `npm install`
-- 開発サーバーの起動: `npm run dev`
-- テストの実行: `npm test`
-- リントの実行: `npx eslint . --ext .js,.ts,.tsx`
+1. Node.js v20 以上が必要です
+2. 依存関係のインストール: `npm install`
+3. 開発サーバーの起動: `npm run dev`
+4. テストの実行: `npm test`
+5. リントの実行: `npx eslint .`
+
+必ず `npm install` を実行してください。
 
 ## テスト手順
 
