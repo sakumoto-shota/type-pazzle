@@ -43,6 +43,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const { code } = validationResult.data;
+
+    if (/\bany\b/.test(code)) {
+      res.status(400).json({ error: 'anyは使用できません' });
+      return;
+    }
     const fileName = 'index.ts';
     const libFileName = 'lib.d.ts';
 
