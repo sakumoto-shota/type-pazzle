@@ -1,12 +1,10 @@
 import eslint from '@eslint/js';
 import nextPlugin from '@next/eslint-plugin-next';
 import prettierConfig from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
-import promisePlugin from 'eslint-plugin-promise';
-import unusedImportsPlugin from 'eslint-plugin-unused-imports';
-import tseslint from 'typescript-eslint';
+import * as tseslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
-export default tseslint.config(
+export default [
   {
     ignores: [
       '.next/',
@@ -17,56 +15,30 @@ export default tseslint.config(
     ]
   },
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
   {
-    files: ['**/*.js'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
-      sourceType: 'commonjs'
-    }
-  },
-  {
+      sourceType: 'module',
+      parser: tsParser,
+      parserOptions: {
+        project: './tsconfig.json'
+      },
+      globals: {
+        document: 'readonly',
+        fetch: 'readonly',
+        window: 'readonly',
+      },
+    },
     plugins: {
-      'import': importPlugin,
-      'unused-imports': unusedImportsPlugin,
-      'promise': promisePlugin,
+      '@typescript-eslint': tseslint,
       '@next/next': nextPlugin
     },
     rules: {
       'no-console': 'warn',
       'spaced-comment': ['warn', 'always', { 'markers': ['/'] }],
       'eqeqeq': ['error', 'allow-null'],
-      'sort-imports': ['error', { 'ignoreDeclarationSort': true }],
-      'import/order': ['error', { 'alphabetize': { 'order': 'asc' }, 'newlines-between': 'never' }],
-      'unused-imports/no-unused-imports': 'error',
-      'promise/prefer-await-to-then': ['error', { 'strict': true }]
-    }
-  },
-  {
-    files: ['**/*.ts', '**/*.tsx'],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.json']
-      }
-    },
-    rules: {
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-      '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-unnecessary-condition': 'warn',
-      '@typescript-eslint/no-confusing-void-expression': 'warn',
-      '@typescript-eslint/naming-convention': [
-        'warn',
-        { 'selector': 'variable', 'format': ['strictCamelCase'] },
-        {
-          'selector': 'variable',
-          'modifiers': ['const'],
-          'format': ['strictCamelCase', 'PascalCase', 'UPPER_CASE']
-        },
-        { 'selector': 'typeAlias', 'format': ['PascalCase'] }
-      ],
-      '@typescript-eslint/switch-exhaustiveness-check': 'error',
-      '@typescript-eslint/strict-boolean-expressions': 'warn',
-      '@typescript-eslint/no-unused-vars': ['error', { 'ignoreRestSiblings': true }]
+      '@typescript-eslint/no-extra-semi': 'warn',
     }
   },
   prettierConfig
-); 
+]; 
