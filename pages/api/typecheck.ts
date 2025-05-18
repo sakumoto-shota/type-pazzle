@@ -11,11 +11,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // CSRFトークンの検証
-    const csrfToken = req.headers['x-csrf-token'];
-    const cookieToken = req.cookies['csrf-token'];
-    
-    if (!csrfToken || !cookieToken || csrfToken !== cookieToken) {
-      res.status(403).json({ error: 'CSRFトークンが無効です' });
+    const csrfToken = req.headers['x-csrf-token'] ?? '';
+    const cookieToken = req.cookies['csrf-token'] ?? '';
+    if (!csrfToken || !cookieToken) {
+      res.status(403).json({ 
+        error: 'CSRFトークンが無効です',
+        details: {
+          headerToken: csrfToken,
+          cookieToken: cookieToken
+        }
+      });
+      return;
+    }
+
+    if (csrfToken !== cookieToken) {
+      res.status(403).json({ 
+        error: 'CSRFトークンが一致しません',
+        details: {
+          headerToken: csrfToken,
+          cookieToken: cookieToken
+        }
+      });
       return;
     }
 
@@ -84,7 +100,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     res.status(200).json(responseValidation.data);
-  } catch (e) {
-    res.status(500).json({ error: 'TypeScript API load error' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: '型チェック中にエラーが発生しました。' });
   }
 } 

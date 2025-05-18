@@ -1,30 +1,47 @@
 import { useState } from 'react';
+import { useErrorToast } from '../src/hooks/useErrorToast';
 import { TypeCheckRequestSchema, TypeCheckResponseSchema } from '../types/validation';
 
+type TypeCheckResult = {
+  success: boolean;
+  message: string;
+};
+
 export const useTypeChecker = () => {
-  const [result, setResult] = useState<string>('');
+  const [result, setResult] = useState<TypeCheckResult | null>(null);
+  const { showError } = useErrorToast();
 
   const checkType = async (code: string) => {
     try {
       // リクエストのバリデーション
       const requestValidation = TypeCheckRequestSchema.safeParse({ code });
       if (!requestValidation.success) {
-        setResult(`❌ エラー: ${requestValidation.error.errors[0].message}`);
+        setResult({ success: false, message: `❌ エラー: ${requestValidation.error.errors[0].message}` });
         return;
       }
+
+      // CSRFトークンの取得
+      const cookies = document.cookie.split(';');
+      const csrfCookie = cookies.find(cookie => cookie.trim().startsWith('csrf-token='));
+      if (!csrfCookie) {
+        setResult({ success: false, message: '❌ エラー: CSRFトークンが見つかりません。ページを再読み込みしてください。' });
+        return;
+      }
+
+      const csrfToken = csrfCookie.split('=')[1].trim();
 
       const res = await fetch('/api/typecheck', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-Token': document.cookie.split('; ').find(row => row.startsWith('csrf-token='))?.split('=')[1] || '',
+          'x-csrf-token': csrfToken,
         },
         credentials: 'include',
         body: JSON.stringify(requestValidation.data),
       });
 
       if (res.status === 403) {
-        setResult('❌ エラー: CSRFトークンが無効です。ページを再読み込みしてください。');
+        setResult({ success: false, message: '❌ エラー: CSRFトークンが無効です。ページを再読み込みしてください。' });
         return;
       }
 
@@ -33,13 +50,14 @@ export const useTypeChecker = () => {
       // レスポンスのバリデーション
       const responseValidation = TypeCheckResponseSchema.safeParse(data);
       if (!responseValidation.success) {
-        setResult('❌ エラー: サーバーからの応答が不正です');
+        setResult({ success: false, message: '❌ エラー: サーバーからの応答が不正です' });
         return;
       }
 
-      setResult(responseValidation.data.result);
-    } catch (e) {
-      setResult('❌ エラー: API通信エラー');
+      setResult({ success: true, message: responseValidation.data.result });
+    } catch (error) {
+      showError(error);
+      setResult({ success: false, message: '❌ エラー: 型チェック中にエラーが発生しました。' });
     }
   };
 

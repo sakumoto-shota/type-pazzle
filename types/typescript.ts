@@ -16,7 +16,7 @@ interface String {}
 `;
 
 // コンパイラオプションの型
-export interface CompilerOptions {
+export type CompilerOptions = {
   noEmit: boolean;
   target: number;
   module: number;

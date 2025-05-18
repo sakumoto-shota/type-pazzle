@@ -1,6 +1,3 @@
-import React from 'react';
-import { useState } from 'react';
-import { useTypeChecker } from '../hooks/useTypeChecker';
 import {
   Box,
   Button,
@@ -8,22 +5,56 @@ import {
   Heading,
   Text,
   VStack,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 import MonacoEditor from '@monaco-editor/react';
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { useTypeChecker } from '../hooks/useTypeChecker';
 
 export const TypeScriptEditor = () => {
   const [code, setCode] = useState<string>(`type User = ???;\nconst u: User = { name: "Taro", age: 20 };`);
   const { result, checkType } = useTypeChecker();
+  const [csrfError, setCsrfError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // ページロード時にCookieを確認
+    const checkCookies = () => {
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+      // CSRFトークンが存在しない場合はエラーメッセージを表示
+      if (!cookies.some(cookie => cookie.startsWith('csrf-token='))) {
+        setCsrfError('CSRFトークンが見つかりません。ページを手動で再読み込みしてください。');
+      } else {
+        setCsrfError(null);
+      }
+    };
+    checkCookies();
+  }, []);
+
+  const handleEditorChange = (value: string | undefined) => {
+    setCode(value ?? '');
+  };
+
+  const handleTypeCheck = async () => {
+    await checkType(code);
+  };
 
   return (
     <Container maxW="container.md" py={8}>
       <VStack spacing={6} align="stretch">
         <Heading size="lg">TypeScript 型パズル</Heading>
+        {csrfError && (
+          <Alert status="error">
+            <AlertIcon />
+            {csrfError}
+          </Alert>
+        )}
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
           <MonacoEditor
             language="typescript"
             value={code}
-            onChange={(value) => setCode(value || "")}
+            onChange={handleEditorChange}
             options={{
               automaticLayout: true,
               minimap: { enabled: false },
@@ -37,9 +68,10 @@ export const TypeScriptEditor = () => {
         <Box>
           <Button
             colorScheme="blue"
-            onClick={() => checkType(code)}
+            onClick={handleTypeCheck}
             size="lg"
             w="100%"
+            isDisabled={!!csrfError}
           >
             型チェック
           </Button>
@@ -52,7 +84,7 @@ export const TypeScriptEditor = () => {
                 fontSize="sm"
                 m={0}
               >
-                {result}
+                {result.message}
               </Text>
             </Box>
           )}
