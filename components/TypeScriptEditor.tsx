@@ -36,6 +36,7 @@ export const TypeScriptEditor = ({
   const [finished, setFinished] = useState(false);
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
+  // eslint-disable-next-line no-unused-vars
   const [scores, setScores] = useState<number[]>(
     initialScores ?? new Array(levels.length).fill(0)
   );
