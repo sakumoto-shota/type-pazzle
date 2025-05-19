@@ -11,11 +11,14 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 describe('TypeScriptEditor', () => {
   it('displays puzzle explanation', () => {
     document.cookie = 'csrf-token=test';
-    render(<TypeScriptEditor />, { wrapper });
+    render(<TypeScriptEditor initialLevel={1} />, { wrapper });
     expect(
       screen.getByText('User型はnameとageを持つオブジェクト型を完成させます。')
     ).toBeInTheDocument();
     expect(screen.getByText('次の問題へ')).toBeInTheDocument();
-    expect(screen.getByText('Lv1: 0 / 100')).toBeInTheDocument();
+    expect(
+      screen.getByText('TypeScript 型パズル - Lv1 (1/5)')
+    ).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 });

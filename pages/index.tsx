@@ -15,7 +15,9 @@ export default function Home() {
         </Heading>
         <List spacing={1}>
           {puzzlesData.levels.map((l) => (
-            <ListItem key={l.level}>Lv{l.level}</ListItem>
+            <ListItem key={l.level}>
+              <Link href={`/play?level=${l.level}`}>Lv{l.level}</Link>
+            </ListItem>
           ))}
         </List>
       </Box>

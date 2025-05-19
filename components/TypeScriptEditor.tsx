@@ -8,8 +8,9 @@ import {
   Alert,
   AlertIcon,
   HStack,
+  Progress,
 } from '@chakra-ui/react';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor, { useMonaco } from '@monaco-editor/react';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useTypeChecker } from '../hooks/useTypeChecker';
@@ -20,16 +21,32 @@ type Puzzles = typeof puzzlesData.levels;
 const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
 
-export const TypeScriptEditor = () => {
-  const [levelIndex, setLevelIndex] = useState(0);
+import { useRouter } from 'next/router';
+
+interface EditorProps {
+  initialLevel?: number;
+}
+
+export const TypeScriptEditor = ({ initialLevel = 1 }: EditorProps) => {
+  const [levelIndex, setLevelIndex] = useState(initialLevel - 1);
   const [puzzleIndex, setPuzzleIndex] = useState(0);
-  const [code, setCode] = useState<string>(levels[0].puzzles[0].code);
+  const [code, setCode] = useState<string>(levels[initialLevel - 1].puzzles[0].code);
   const [finished, setFinished] = useState(false);
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
   const [scores, setScores] = useState<number[]>(
     new Array(levels.length).fill(0)
   );
+  const monaco = useMonaco();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (monaco) {
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        diagnosticCodesToIgnore: [1005],
+      });
+    }
+  }, [monaco]);
 
   const goToNext = () => {
     if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
@@ -41,6 +58,12 @@ export const TypeScriptEditor = () => {
       setFinished(true);
     }
   };
+
+  useEffect(() => {
+    if (finished) {
+      router.push({ pathname: '/result', query: { scores: scores.join('-') } });
+    }
+  }, [finished, router, scores]);
 
   useEffect(() => {
     // ページロード時にCookieを確認
@@ -87,9 +110,12 @@ export const TypeScriptEditor = () => {
           {levels[levelIndex].puzzles.length})
         </Heading>
         <Box>
-          {scores.map((s, i) => (
-            <Text key={i}>Lv{i + 1}: {s} / 100</Text>
-          ))}
+          <Text>進捗: {puzzleIndex}/{levels[levelIndex].puzzles.length}</Text>
+          <Progress
+            value={(puzzleIndex / levels[levelIndex].puzzles.length) * 100}
+            size="sm"
+            mt={2}
+          />
         </Box>
         <Text fontSize="md" color="gray.600">
           {levels[levelIndex].puzzles[puzzleIndex].explanation}
