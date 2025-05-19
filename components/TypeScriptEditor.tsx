@@ -21,7 +21,7 @@ type Puzzles = typeof puzzlesData.levels;
 
 const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
-import { setScores, setLevel } from '../src/utils/progress';
+import { setLevel } from '../src/utils/progress';
 
 import { useRouter } from 'next/router';
 
