@@ -2,6 +2,7 @@ import { Box, Button, Container, Heading, List, ListItem, Text } from '@chakra-u
 import Head from 'next/head';
 import Link from 'next/link';
 import puzzlesData from '../data/puzzles.json';
+import NextLink from 'next/link';
 
 export default function Home() {
   return (
@@ -24,7 +25,9 @@ export default function Home() {
         <List spacing={1}>
           {puzzlesData.levels.map((l) => (
             <ListItem key={l.level}>
-              <Link href={`/play?level=${l.level}`}>Lv{l.level}</Link>
+              <Button as={NextLink} href={`/play?level=${l.level}`} size="sm" colorScheme="teal">
+                Lv{l.level}
+              </Button>
             </ListItem>
           ))}
         </List>
