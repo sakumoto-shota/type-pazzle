@@ -25,9 +25,13 @@ import { useRouter } from 'next/router';
 
 interface EditorProps {
   initialLevel?: number;
+  initialScores?: number[];
 }
 
-export const TypeScriptEditor = ({ initialLevel = 1 }: EditorProps) => {
+export const TypeScriptEditor = ({
+  initialLevel = 1,
+  initialScores,
+}: EditorProps): JSX.Element => {
   const [levelIndex, setLevelIndex] = useState(initialLevel - 1);
   const [puzzleIndex, setPuzzleIndex] = useState(0);
   const [code, setCode] = useState<string>(levels[initialLevel - 1].puzzles[0].code);
@@ -35,7 +39,7 @@ export const TypeScriptEditor = ({ initialLevel = 1 }: EditorProps) => {
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
   const [scores, setScores] = useState<number[]>(
-    new Array(levels.length).fill(0)
+    initialScores ?? new Array(levels.length).fill(0)
   );
   const monaco = useMonaco();
   const router = useRouter();
@@ -52,8 +56,10 @@ export const TypeScriptEditor = ({ initialLevel = 1 }: EditorProps) => {
     if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
       setPuzzleIndex((p) => p + 1);
     } else if (levelIndex < levels.length - 1) {
-      setLevelIndex((l) => l + 1);
-      setPuzzleIndex(0);
+      router.push({
+        pathname: '/result',
+        query: { scores: scores.join('-'), level: levelIndex + 1 },
+      });
     } else {
       setFinished(true);
     }
