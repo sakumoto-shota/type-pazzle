@@ -1,11 +1,17 @@
 import { Box, Container, Heading, List, ListItem, Text, Button } from '@chakra-ui/react';
 import Link from 'next/link';
-import puzzlesData from '../data/puzzles.json';
 import NextLink from 'next/link';
+import Head from 'next/head';
+import puzzlesData from '../data/puzzles.json';
 
 export default function Home() {
   return (
-    <Container maxW="container.md" py={8}>
+    <>
+      <Head>
+        <title>Type Puzzle - TOP</title>
+        <meta name="description" content="TypeScript 型パズルゲームのホームページです。" />
+      </Head>
+      <Container maxW="container.md" py={8}>
       <Heading size="lg" mb={4}>
         TypeScript 型パズル
       </Heading>
@@ -28,5 +34,6 @@ export default function Home() {
         <Button colorScheme="teal">ゲームを始める</Button>
       </Link>
     </Container>
+    </>
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import type { JSX } from 'react';
 import { TypeScriptEditor } from '../components/TypeScriptEditor';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import {
   getLevel,
   getScores,
@@ -34,9 +35,15 @@ export default function PlayPage(): JSX.Element | null {
     setScores(initialScores);
   }
   return (
-    <TypeScriptEditor
-      initialLevel={initialLevel}
-      initialScores={initialScores}
-    />
+    <>
+      <Head>
+        <title>Type Puzzle - プレイ</title>
+        <meta name="description" content="TypeScript 型パズルをプレイするページです。" />
+      </Head>
+      <TypeScriptEditor
+        initialLevel={initialLevel}
+        initialScores={initialScores}
+      />
+    </>
   );
 }
