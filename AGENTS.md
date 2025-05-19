@@ -52,6 +52,7 @@ export function isValidUser(u: unknown): u is User {
 
 `[type-puzzle] <タイトル>`
 PRテンプレートは `.github/PULL_REQUEST_TEMPLATE.md` を参照してください。
+PRを作成するときは最新ブランチをベースにしてください。
 
 ### コミットメッセージのルール
 
