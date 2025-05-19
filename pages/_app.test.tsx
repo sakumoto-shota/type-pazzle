@@ -1,12 +1,15 @@
 import { render } from '@testing-library/react';
-import React from 'react';
+import React, { ReactElement } from 'react';
+import { describe, it, expect } from 'vitest';
 import MyApp from './_app';
 
-const Dummy = (): JSX.Element => <div>dummy</div>;
+const Dummy = (): ReactElement => React.createElement('div', null, 'dummy');
 
 describe('MyApp', () => {
   it('adds viewport meta tag', () => {
-    render(<MyApp Component={Dummy} pageProps={{}} />);
+    render(
+      React.createElement(MyApp, { Component: Dummy, pageProps: {} })
+    );
     const meta = document.querySelector('meta[name="viewport"]');
     expect(meta).not.toBeNull();
     expect(meta?.getAttribute('content')).toBe(
