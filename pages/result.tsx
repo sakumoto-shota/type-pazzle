@@ -1,5 +1,4 @@
-import React from 'react';
-import type { JSX } from 'react';
+import { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -20,7 +19,7 @@ import {
   setScores,
 } from '../src/utils/progress';
 
-export default function ResultPage(): JSX.Element {
+export default function ResultPage() {
   const router = useRouter();
   const scoresParam = router.query.scores;
   const levelParam = router.query.level;
@@ -38,7 +37,7 @@ export default function ResultPage(): JSX.Element {
   const finalScore = level ? scores[level - 1] ?? 0 : total;
   const animatedScore = useScoreAnimation(finalScore);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setScores(scores);
     setLevel(level ?? null);
   }, [scores, level]);

@@ -1,5 +1,4 @@
-import React from 'react';
-import type { JSX } from 'react';
+
 import {
   Box,
   Button,
@@ -29,7 +28,7 @@ import type { EditorProps } from '../types/components';
 export const TypeScriptEditor = ({
   initialLevel = 1,
   initialScores,
-}: EditorProps): JSX.Element => {
+}: EditorProps) => {
   const [levelIndex] = useState(initialLevel - 1);
   const [puzzleIndex, setPuzzleIndex] = useState(0);
   const [code, setCode] = useState<string>(levels[initialLevel - 1].puzzles[0].code);

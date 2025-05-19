@@ -2,9 +2,9 @@ import { renderHook, act } from '@testing-library/react';
 import { useTypeChecker } from './useTypeChecker';
 import { describe, expect, it, beforeEach, vi, beforeAll, afterAll, afterEach } from 'vitest';
 import { ChakraProvider } from '@chakra-ui/react';
-import React from 'react';
+import type { ReactNode } from 'react';
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
   <ChakraProvider>{children}</ChakraProvider>
 );
 

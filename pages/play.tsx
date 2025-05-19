@@ -1,5 +1,3 @@
-import React from 'react';
-import type { JSX } from 'react';
 import { TypeScriptEditor } from '../components/TypeScriptEditor';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -10,7 +8,7 @@ import {
   setScores,
 } from '../src/utils/progress';
 
-export default function PlayPage(): JSX.Element | null {
+export default function PlayPage() {
   const router = useRouter();
   if (!router.isReady) return null;
   const levelParam = router.query.level;
