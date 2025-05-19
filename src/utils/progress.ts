@@ -65,3 +65,12 @@ export const setLevel = (level: number | null): void => {
     document.cookie = `level=${level}; path=/`;
   }
 };
+
+export const resetProgress = (): void => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+  const zeroScores = new Array<number>(TOTAL_LEVELS).fill(0);
+  setScores(zeroScores);
+  setLevel(1);
+};

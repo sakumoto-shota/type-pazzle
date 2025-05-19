@@ -6,6 +6,7 @@ import {
   getScores,
   setLevel,
   setScores,
+  resetProgress,
 } from '../src/utils/progress';
 
 export default function PlayPage() {
@@ -27,6 +28,10 @@ export default function PlayPage() {
     typeof scoresParam === 'string'
       ? scoresParam.split('-').map((s) => parseInt(s, 10))
       : cookieScores ?? undefined;
+
+  if (initialLevel === 1 && typeof scoresParam !== 'string') {
+    resetProgress();
+  }
 
   setLevel(initialLevel);
   if (initialScores) {
