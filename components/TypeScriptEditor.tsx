@@ -1,3 +1,5 @@
+import React from 'react';
+import type { JSX } from 'react';
 import {
   Box,
   Button,
@@ -11,7 +13,6 @@ import {
   Progress,
 } from '@chakra-ui/react';
 import MonacoEditor, { useMonaco } from '@monaco-editor/react';
-import React from 'react';
 import { useState, useEffect } from 'react';
 import { useTypeChecker } from '../hooks/useTypeChecker';
 import puzzlesData from '../data/puzzles.json';
@@ -32,7 +33,7 @@ export const TypeScriptEditor = ({
   initialLevel = 1,
   initialScores,
 }: EditorProps): JSX.Element => {
-  const [levelIndex, setLevelIndex] = useState(initialLevel - 1);
+  const [levelIndex] = useState(initialLevel - 1);
   const [puzzleIndex, setPuzzleIndex] = useState(0);
   const [code, setCode] = useState<string>(levels[initialLevel - 1].puzzles[0].code);
   const [finished, setFinished] = useState(false);

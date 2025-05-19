@@ -1,3 +1,4 @@
+/* global setInterval, clearInterval */
 import { useEffect, useState } from 'react';
 
 export const useScoreAnimation = (

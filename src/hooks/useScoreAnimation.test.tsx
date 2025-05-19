@@ -1,13 +1,20 @@
-import { renderHook } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
 import { useScoreAnimation } from './useScoreAnimation';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 describe('useScoreAnimation', () => {
-  it('returns final score after duration', () => {
+  beforeEach(() => {
     vi.useFakeTimers();
-    const { result } = renderHook(() => useScoreAnimation(50, 1000));
-    vi.advanceTimersByTime(1000);
-    expect(result.current).toBe(50);
+  });
+  afterEach(() => {
     vi.useRealTimers();
+  });
+
+  it('returns final score after duration', () => {
+    const { result } = renderHook(() => useScoreAnimation(50, 1000));
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(result.current).toBe(50);
   });
 });

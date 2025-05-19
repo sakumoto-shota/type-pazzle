@@ -1,3 +1,5 @@
+import React from 'react';
+import type { JSX } from 'react';
 import { TypeScriptEditor } from '../components/TypeScriptEditor';
 import { useRouter } from 'next/router';
 

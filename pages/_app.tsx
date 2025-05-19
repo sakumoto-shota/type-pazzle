@@ -1,3 +1,5 @@
+import React from 'react';
+import type { JSX } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import { Layout } from '../components/Layout';

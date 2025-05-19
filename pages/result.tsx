@@ -1,3 +1,5 @@
+import React from 'react';
+import type { JSX } from 'react';
 import {
   Box,
   Button,
@@ -7,7 +9,6 @@ import {
   ListItem,
   Text,
 } from '@chakra-ui/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import puzzlesData from '../data/puzzles.json';
 import { useScoreAnimation } from '../src/hooks/useScoreAnimation';
