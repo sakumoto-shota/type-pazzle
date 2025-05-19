@@ -2,11 +2,7 @@ import { useState } from 'react';
 import { useErrorToast } from '../src/hooks/useErrorToast';
 import { TypeCheckRequestSchema, TypeCheckResponseSchema } from '../types/validation';
 import { getCsrfToken } from '../src/utils/csrf';
-
-type TypeCheckResult = {
-  success: boolean;
-  message: string;
-};
+import type { TypeCheckResult } from '../types/typecheck';
 
 export const useTypeChecker = () => {
   const [result, setResult] = useState<TypeCheckResult | null>(null);

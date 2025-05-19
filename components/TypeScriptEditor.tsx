@@ -24,11 +24,7 @@ import { getCsrfToken } from '../src/utils/csrf';
 import { setLevel } from '../src/utils/progress';
 
 import { useRouter } from 'next/router';
-
-interface EditorProps {
-  initialLevel?: number;
-  initialScores?: number[];
-}
+import type { EditorProps } from '../types/components';
 
 export const TypeScriptEditor = ({
   initialLevel = 1,
