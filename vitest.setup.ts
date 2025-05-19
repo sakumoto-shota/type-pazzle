@@ -2,7 +2,7 @@
 /// <reference types="jsdom" />
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
-import React from 'react';
+import * as React from 'react';
 import { JSDOM } from 'jsdom';
 
 // DOMのセットアップ

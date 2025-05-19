@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import React from 'react';
+import type { ReactNode } from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { TypeScriptEditor } from './TypeScriptEditor';
 
@@ -17,7 +17,7 @@ vi.mock('next/router', () => ({
   }),
 }));
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
   <ChakraProvider>{children}</ChakraProvider>
 );
 

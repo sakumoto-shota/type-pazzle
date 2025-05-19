@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import type { JSX } from 'react';
+import { useEffect } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Layout } from '../components/Layout';
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const selector = 'meta[name="viewport"]';
     if (!document.querySelector(selector)) {
