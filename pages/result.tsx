@@ -12,28 +12,44 @@ import {
 import { useRouter } from 'next/router';
 import puzzlesData from '../data/puzzles.json';
 import { useScoreAnimation } from '../src/hooks/useScoreAnimation';
+import {
+  getLevel,
+  getScores,
+  setLevel,
+  setScores,
+} from '../src/utils/progress';
 
 export default function ResultPage(): JSX.Element {
   const router = useRouter();
   const scoresParam = router.query.scores;
   const levelParam = router.query.level;
+  const cookieScores = getScores() ?? [];
+  const cookieLevel = getLevel();
   const scores =
     typeof scoresParam === 'string'
       ? scoresParam.split('-').map((s) => parseInt(s, 10))
-      : [];
+      : cookieScores;
   const level =
-    typeof levelParam === 'string' ? parseInt(levelParam, 10) : null;
+    typeof levelParam === 'string'
+      ? parseInt(levelParam, 10)
+      : cookieLevel;
   const total = scores.reduce((sum, s) => sum + (Number.isNaN(s) ? 0 : s), 0);
   const finalScore = level ? scores[level - 1] ?? 0 : total;
   const animatedScore = useScoreAnimation(finalScore);
 
+  React.useEffect(() => {
+    setScores(scores);
+    setLevel(level ?? null);
+  }, [scores, level]);
+
   const handleNext = (): void => {
     if (level && level < puzzlesData.levels.length) {
-      router.push({
-        pathname: '/play',
-        query: { level: level + 1, scores: scores.join('-') },
-      });
+      setScores(scores);
+      setLevel(level + 1);
+      router.push('/play');
     } else {
+      setScores(scores);
+      setLevel(null);
       router.push('/');
     }
   };

@@ -21,6 +21,7 @@ type Puzzles = typeof puzzlesData.levels;
 
 const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
+import { setLevel } from '../src/utils/progress';
 
 import { useRouter } from 'next/router';
 
@@ -57,18 +58,21 @@ export const TypeScriptEditor = ({
     if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
       setPuzzleIndex((p) => p + 1);
     } else if (levelIndex < levels.length - 1) {
-      router.push({
-        pathname: '/result',
-        query: { scores: scores.join('-'), level: levelIndex + 1 },
-      });
+      setScores(scores);
+      setLevel(levelIndex + 1);
+      router.push('/result');
     } else {
+      setScores(scores);
+      setLevel(null);
       setFinished(true);
     }
   };
 
   useEffect(() => {
     if (finished) {
-      router.push({ pathname: '/result', query: { scores: scores.join('-') } });
+      setScores(scores);
+      setLevel(null);
+      router.push('/result');
     }
   }, [finished, router, scores]);
 
