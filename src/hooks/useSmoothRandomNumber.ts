@@ -1,3 +1,4 @@
+/* global requestAnimationFrame, cancelAnimationFrame */
 import { useEffect, useRef, useState } from 'react';
 
 /**
