@@ -1,10 +1,18 @@
-import { Box, Container, Heading, List, ListItem, Text, Button } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, List, ListItem, Text } from '@chakra-ui/react';
+import Head from 'next/head';
 import Link from 'next/link';
 import puzzlesData from '../data/puzzles.json';
 
 export default function Home() {
   return (
     <Container maxW="container.md" py={8}>
+      <Head>
+        <title>TypeScript 型パズル</title>
+        <meta
+          name="description"
+          content="TypeScript の型を使ったパズルゲームです"
+        />
+      </Head>
       <Heading size="lg" mb={4}>
         TypeScript 型パズル
       </Heading>

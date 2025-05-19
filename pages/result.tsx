@@ -1,4 +1,5 @@
 import { Box, Button, Container, Heading, List, ListItem, Text } from '@chakra-ui/react';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -10,6 +11,13 @@ export default function ResultPage() {
 
   return (
     <Container maxW="container.md" py={8}>
+      <Head>
+        <title>結果 - TypeScript 型パズル</title>
+        <meta
+          name="description"
+          content="ゲームの結果を表示するページです"
+        />
+      </Head>
       <Heading size="lg" mb={4}>
         結果
       </Heading>
