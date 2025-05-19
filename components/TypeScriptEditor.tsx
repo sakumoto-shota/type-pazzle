@@ -84,15 +84,20 @@ export const TypeScriptEditor = ({
   }, [levelIndex, puzzleIndex]);
 
   useEffect(() => {
-    if (result?.success) {
+    if (!result) {
+      return;
+    }
+
+    if (result.success) {
       setScores((prev) => {
         const arr = [...prev];
         arr[levelIndex] = Math.min(arr[levelIndex] + 20, 100);
         setScoresCookie(arr);
         return arr;
       });
-      goToNext();
     }
+
+    goToNext();
   }, [result, levelIndex]);
 
   const handleEditorChange = (value: string | undefined) => {
