@@ -36,5 +36,7 @@ export const config = {
   matcher: [
     '/api/:path*',
     '/', // トップページにもミドルウェアを適用
+    '/play', // レベル選択ページ用
+    '/result', // 結果表示ページ用
   ],
-}; 
+};
