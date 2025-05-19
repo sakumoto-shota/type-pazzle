@@ -5,6 +5,7 @@ export const TypeCheckRequestSchema = z.object({
 });
 
 export const TypeCheckResponseSchema = z.object({
+  success: z.boolean(),
   result: z.string(),
 });
 

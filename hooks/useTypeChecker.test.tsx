@@ -31,7 +31,7 @@ describe('useTypeChecker', () => {
     document.cookie = 'csrf-token=test-token';
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ result: '✅ 型チェック成功!' }),
+      json: () => Promise.resolve({ success: true, result: '✅ 型チェック成功!' }),
     });
 
     const { result } = renderHook(() => useTypeChecker(), { wrapper });
@@ -43,6 +43,25 @@ describe('useTypeChecker', () => {
     expect(result.current.result).toEqual({
       success: true,
       message: '✅ 型チェック成功!',
+    });
+  });
+
+  it('handles compile error from API', async () => {
+    document.cookie = 'csrf-token=test-token';
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ success: false, result: '型エラー' }),
+    });
+
+    const { result } = renderHook(() => useTypeChecker(), { wrapper });
+
+    await act(async () => {
+      await result.current.checkType('invalid code');
+    });
+
+    expect(result.current.result).toEqual({
+      success: false,
+      message: '型エラー',
     });
   });
 

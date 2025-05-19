@@ -52,7 +52,10 @@ export const useTypeChecker = () => {
         return;
       }
 
-      setResult({ success: true, message: responseValidation.data.result });
+      setResult({
+        success: responseValidation.data.success,
+        message: responseValidation.data.result,
+      });
     } catch (error) {
       showError(error);
       setResult({ success: false, message: '❌ エラー: 型チェック中にエラーが発生しました。' });

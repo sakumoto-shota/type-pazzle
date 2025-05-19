@@ -93,9 +93,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // レスポンスのバリデーション
     const response = {
-      result: diagnostics.length === 0
-        ? '✅ 型チェック成功!'
-        : diagnostics.map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n')).join('\n')
+      success: diagnostics.length === 0,
+      result:
+        diagnostics.length === 0
+          ? '✅ 型チェック成功!'
+          : diagnostics
+              .map((d) =>
+                ts.flattenDiagnosticMessageText(d.messageText, '\n'),
+              )
+              .join('\n'),
     };
 
     const responseValidation = TypeCheckResponseSchema.safeParse(response);
