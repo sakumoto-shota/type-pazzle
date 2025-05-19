@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getScores, setScores, getLevel, setLevel } from './progress';
+import { getScores, setScores, getLevel, setLevel, resetProgress } from './progress';
 
 beforeEach(() => {
   document.cookie = '';
@@ -13,7 +13,7 @@ afterEach(() => {
 describe('progress utils', () => {
   it('reads and writes scores', () => {
     vi.stubGlobal('document', { cookie: '' });
-    setScores([10, 20]);
+    setScores([10, 20, 0, 0, 0]);
     expect(document.cookie).toContain('scores=10-20-0-0-0');
     vi.stubGlobal('document', { cookie: 'scores=10-20-0-0-0' });
     expect(getScores()).toEqual([10, 20, 0, 0, 0]);
@@ -31,5 +31,11 @@ describe('progress utils', () => {
     vi.stubGlobal('document', { cookie: '' });
     expect(getScores()).toBeNull();
     expect(getLevel()).toBeNull();
+  });
+
+  it('resets progress to defaults', () => {
+    vi.stubGlobal('document', { cookie: 'scores=10-20-0-0-0; level=2' });
+    resetProgress();
+    expect(document.cookie).toMatch(/level=1; path=\//);
   });
 });

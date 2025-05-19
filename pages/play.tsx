@@ -6,13 +6,20 @@ import {
   getScores,
   setLevel,
   setScores,
+  resetProgress,
 } from '../src/utils/progress';
 
 export default function PlayPage() {
   const router = useRouter();
   if (!router.isReady) return null;
-  const levelParam = router.query.level;
-  const scoresParam = router.query.scores;
+  let levelParam = router.query.level;
+  let scoresParam = router.query.scores;
+
+  // 初回アクセス時はscores=0-0-0-0-0でリセット
+  if (!scoresParam && (!levelParam || levelParam === '1')) {
+    scoresParam = '0-0-0-0-0';
+  }
+
   const cookieLevel = getLevel();
   const cookieScores = getScores();
 
@@ -27,6 +34,10 @@ export default function PlayPage() {
     typeof scoresParam === 'string'
       ? scoresParam.split('-').map((s) => parseInt(s, 10))
       : cookieScores ?? undefined;
+
+  if (initialLevel === 1 && typeof scoresParam !== 'string') {
+    resetProgress();
+  }
 
   setLevel(initialLevel);
   if (initialScores) {
