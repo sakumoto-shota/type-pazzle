@@ -12,8 +12,14 @@ import {
 export default function PlayPage() {
   const router = useRouter();
   if (!router.isReady) return null;
-  const levelParam = router.query.level;
-  const scoresParam = router.query.scores;
+  let levelParam = router.query.level;
+  let scoresParam = router.query.scores;
+
+  // 初回アクセス時はscores=0-0-0-0-0でリセット
+  if (!scoresParam && (!levelParam || levelParam === '1')) {
+    scoresParam = '0-0-0-0-0';
+  }
+
   const cookieLevel = getLevel();
   const cookieScores = getScores();
 

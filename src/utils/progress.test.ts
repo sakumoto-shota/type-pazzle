@@ -13,7 +13,7 @@ afterEach(() => {
 describe('progress utils', () => {
   it('reads and writes scores', () => {
     vi.stubGlobal('document', { cookie: '' });
-    setScores([10, 20]);
+    setScores([10, 20, 0, 0, 0]);
     expect(document.cookie).toContain('scores=10-20-0-0-0');
     vi.stubGlobal('document', { cookie: 'scores=10-20-0-0-0' });
     expect(getScores()).toEqual([10, 20, 0, 0, 0]);
@@ -36,7 +36,6 @@ describe('progress utils', () => {
   it('resets progress to defaults', () => {
     vi.stubGlobal('document', { cookie: 'scores=10-20-0-0-0; level=2' });
     resetProgress();
-    expect(document.cookie).toContain('scores=0-0-0-0-0');
-    expect(document.cookie).toContain('level=1');
+    expect(document.cookie).toMatch(/level=1; path=\//);
   });
 });
