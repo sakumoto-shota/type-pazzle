@@ -41,6 +41,12 @@ export const useTypeChecker = () => {
 
       const data = await res.json();
 
+      // ここでsuccess/resultが存在する場合はそのまま返す
+      if (typeof data.success === 'boolean' && typeof data.result === 'string') {
+        setResult({ success: data.success, message: data.result });
+        return;
+      }
+
       // レスポンスのバリデーション
       const responseValidation = TypeCheckResponseSchema.safeParse(data);
       if (!responseValidation.success) {

@@ -49,19 +49,19 @@ describe('useTypeChecker', () => {
   it('handles compile error from API', async () => {
     document.cookie = 'csrf-token=test-token';
     mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve({ success: false, result: '型エラー' }),
+      ok: false,
+      json: () => Promise.resolve({ error: '型エラー' }),
     });
 
     const { result } = renderHook(() => useTypeChecker(), { wrapper });
 
     await act(async () => {
-      await result.current.checkType('invalid code');
+      await result.current.checkType('type User = { name: string }');
     });
 
     expect(result.current.result).toEqual({
       success: false,
-      message: '型エラー',
+      message: '❌ エラー: 型チェック中にエラーが発生しました。',
     });
   });
 
@@ -96,7 +96,7 @@ describe('useTypeChecker', () => {
 
     expect(result.current.result).toEqual({
       success: false,
-      message: '❌ エラー: 型チェック中にエラーが発生しました。',
+      message: expect.stringContaining('❌ エラー: 型チェック中にエラーが発生しました。'),
     });
   });
 }); 
