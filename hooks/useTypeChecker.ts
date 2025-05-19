@@ -41,6 +41,12 @@ export const useTypeChecker = () => {
 
       const data = await res.json();
 
+      // ここでsuccess/resultが存在する場合はそのまま返す
+      if (typeof data.success === 'boolean' && typeof data.result === 'string') {
+        setResult({ success: data.success, message: data.result });
+        return;
+      }
+
       // レスポンスのバリデーション
       const responseValidation = TypeCheckResponseSchema.safeParse(data);
       if (!responseValidation.success) {
@@ -52,7 +58,10 @@ export const useTypeChecker = () => {
         return;
       }
 
-      setResult({ success: true, message: responseValidation.data.result });
+      setResult({
+        success: responseValidation.data.success,
+        message: responseValidation.data.result,
+      });
     } catch (error) {
       showError(error);
       setResult({ success: false, message: '❌ エラー: 型チェック中にエラーが発生しました。' });
