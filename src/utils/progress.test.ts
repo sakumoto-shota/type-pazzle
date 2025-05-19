@@ -1,7 +1,12 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { getScores, setScores, getLevel, setLevel } from './progress';
 
+beforeEach(() => {
+  document.cookie = '';
+});
+
 afterEach(() => {
+  document.cookie = '';
   vi.unstubAllGlobals();
 });
 
