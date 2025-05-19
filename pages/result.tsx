@@ -10,6 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import puzzlesData from '../data/puzzles.json';
 import { useScoreAnimation } from '../src/hooks/useScoreAnimation';
 import {
@@ -55,7 +56,12 @@ export default function ResultPage(): JSX.Element {
   };
 
   return (
-    <Container maxW={{ base: 'container.sm', md: 'container.md' }} py={8}>
+    <>
+      <Head>
+        <title>Type Puzzle - 結果</title>
+        <meta name="description" content="ゲーム結果を表示するページです。" />
+      </Head>
+      <Container maxW={{ base: 'container.sm', md: 'container.md' }} py={8}>
       <Heading size="lg" mb={4} textAlign="center">
         {level ? `Lv${level} 結果` : '結果'}
       </Heading>
@@ -74,5 +80,6 @@ export default function ResultPage(): JSX.Element {
         {level && level < puzzlesData.levels.length ? '次のレベルへ' : 'TOPへ戻る'}
       </Button>
     </Container>
+    </>
   );
 }
