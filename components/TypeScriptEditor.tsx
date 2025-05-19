@@ -21,7 +21,7 @@ type Puzzles = typeof puzzlesData.levels;
 
 const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
-import { setLevel } from '../src/utils/progress';
+import { setLevel, setScores as setScoresCookie } from '../src/utils/progress';
 
 import { useRouter } from 'next/router';
 import type { EditorProps } from '../types/components';
@@ -36,6 +36,7 @@ export const TypeScriptEditor = ({
   const [finished, setFinished] = useState(false);
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
+  // eslint-disable-next-line no-unused-vars
   const [scores, setScores] = useState<number[]>(
     initialScores ?? new Array(levels.length).fill(0)
   );
@@ -54,11 +55,9 @@ export const TypeScriptEditor = ({
     if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
       setPuzzleIndex((p) => p + 1);
     } else if (levelIndex < levels.length - 1) {
-      setScores(scores);
       setLevel(levelIndex + 1);
       router.push('/result');
     } else {
-      setScores(scores);
       setLevel(null);
       setFinished(true);
     }
@@ -66,11 +65,10 @@ export const TypeScriptEditor = ({
 
   useEffect(() => {
     if (finished) {
-      setScores(scores);
       setLevel(null);
       router.push('/result');
     }
-  }, [finished, router, scores]);
+  }, [finished, router]);
 
   useEffect(() => {
     // ページロード時にCookieを確認
@@ -91,11 +89,12 @@ export const TypeScriptEditor = ({
       setScores((prev) => {
         const arr = [...prev];
         arr[levelIndex] = Math.min(arr[levelIndex] + 20, 100);
+        setScoresCookie(arr);
         return arr;
       });
       goToNext();
     }
-  }, [result]);
+  }, [result, levelIndex]);
 
   const handleEditorChange = (value: string | undefined) => {
     setCode(value ?? '');
