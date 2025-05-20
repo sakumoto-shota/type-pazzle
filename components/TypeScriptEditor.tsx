@@ -120,9 +120,13 @@ export const TypeScriptEditor = ({
           {levels[levelIndex].puzzles.length})
         </Heading>
         <Box>
-          <Text>進捗: {puzzleIndex}/{levels[levelIndex].puzzles.length}</Text>
+          <Text>
+            進捗: {puzzleIndex + 1}/{levels[levelIndex].puzzles.length}
+          </Text>
           <Progress
-            value={(puzzleIndex / levels[levelIndex].puzzles.length) * 100}
+            value={
+              ((puzzleIndex + 1) / levels[levelIndex].puzzles.length) * 100
+            }
             size="sm"
             mt={2}
           />

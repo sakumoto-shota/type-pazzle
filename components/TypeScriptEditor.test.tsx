@@ -33,5 +33,6 @@ describe('TypeScriptEditor', () => {
       screen.getByText('TypeScript 型パズル - Lv1 (1/5)')
     ).toBeInTheDocument();
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    expect(screen.getByText('進捗: 1/5')).toBeInTheDocument();
   });
 });
