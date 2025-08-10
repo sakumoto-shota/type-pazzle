@@ -22,3 +22,7 @@ yarn-error.log*
 
 # tasks
 task/
+
+# test
+playwright-report/
+__test__/
