@@ -1,4 +1,3 @@
-
 import {
   Box,
   Button,
@@ -20,15 +19,19 @@ type Puzzles = typeof puzzlesData.levels;
 
 const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
-import { setLevel, setScores as setScoresCookie } from '../src/utils/progress';
+import {
+  setLevel,
+  setScores as setScoresCookie,
+  getResults,
+  setResults,
+  type LevelResults,
+  type PuzzleResult,
+} from '../src/utils/progress';
 
 import { useRouter } from 'next/router';
 import type { EditorProps } from '../types/components';
 
-export const TypeScriptEditor = ({
-  initialLevel = 1,
-  initialScores,
-}: EditorProps) => {
+export const TypeScriptEditor = ({ initialLevel = 1, initialScores }: EditorProps) => {
   const [levelIndex] = useState(initialLevel - 1);
   const [puzzleIndex, setPuzzleIndex] = useState(0);
   const [code, setCode] = useState<string>(levels[initialLevel - 1].puzzles[0].code);
@@ -36,9 +39,8 @@ export const TypeScriptEditor = ({
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
   // eslint-disable-next-line no-unused-vars
-  const [scores, setScores] = useState<number[]>(
-    initialScores ?? new Array(levels.length).fill(0)
-  );
+  const [scores, setScores] = useState<number[]>(initialScores ?? new Array(levels.length).fill(0));
+  const [levelResults, setLevelResults] = useState<LevelResults>(getResults() || {});
   const monaco = useMonaco();
   const router = useRouter();
 
@@ -88,7 +90,36 @@ export const TypeScriptEditor = ({
       return;
     }
 
+    const isLastQuestion = puzzleIndex === levels[levelIndex].puzzles.length - 1;
+    const levelKey = String(levelIndex + 1);
+
+    // 詳細な結果を保存
+    const newResult: PuzzleResult = {
+      answer: result.success,
+      puzzleIndex: puzzleIndex,
+      description: result.message,
+    };
+
+    // 現在のレベルの結果を更新
+    const updatedResults = { ...levelResults };
+    if (!updatedResults[levelKey]) {
+      updatedResults[levelKey] = [];
+    }
+
+    // 既存の結果を更新または追加
+    const existingIndex = updatedResults[levelKey].findIndex((r) => r.puzzleIndex === puzzleIndex);
+    if (existingIndex >= 0) {
+      updatedResults[levelKey][existingIndex] = newResult;
+    } else {
+      updatedResults[levelKey].push(newResult);
+    }
+
+    // 結果を保存
+    setLevelResults(updatedResults);
+    setResults(updatedResults);
+
     if (result.success) {
+      // スコアを更新してCookieに保存
       setScores((prev) => {
         const arr = [...prev];
         arr[levelIndex] = Math.min(arr[levelIndex] + 20, 100);
@@ -97,7 +128,14 @@ export const TypeScriptEditor = ({
       });
     }
 
-    goToNext();
+    // 最後の問題の場合は遅延を入れてCookie保存を確実にする
+    if (isLastQuestion) {
+      window.setTimeout(() => {
+        goToNext();
+      }, 1000); // 1秒待つ
+    } else {
+      goToNext();
+    }
   }, [result, levelIndex]);
 
   const handleEditorChange = (value: string | undefined) => {
@@ -113,9 +151,9 @@ export const TypeScriptEditor = ({
   };
 
   return (
-    <Container maxW="container.md" py={8}>
-      <VStack spacing={6} align="stretch">
-        <Heading size="lg">
+    <Container maxW='container.md' py={8}>
+      <VStack spacing={6} align='stretch'>
+        <Heading size='lg'>
           TypeScript 型パズル - Lv{levels[levelIndex].level} ({puzzleIndex + 1}/
           {levels[levelIndex].puzzles.length})
         </Heading>
@@ -124,30 +162,29 @@ export const TypeScriptEditor = ({
             進捗: {puzzleIndex + 1}/{levels[levelIndex].puzzles.length}
           </Text>
           <Progress
-            value={
-              ((puzzleIndex + 1) / levels[levelIndex].puzzles.length) * 100
-            }
-            size="sm"
+            value={((puzzleIndex + 1) / levels[levelIndex].puzzles.length) * 100}
+            size='sm'
             mt={2}
           />
         </Box>
-        <Text fontSize="md" color="gray.600">
+        <Text fontSize='md' color='gray.600'>
           {levels[levelIndex].puzzles[puzzleIndex].explanation}
         </Text>
         {finished && (
-          <Alert status="success">
-            <AlertIcon />すべてのレベルをクリアしました！
+          <Alert status='success'>
+            <AlertIcon />
+            すべてのレベルをクリアしました！
           </Alert>
         )}
         {csrfError && (
-          <Alert status="error">
+          <Alert status='error'>
             <AlertIcon />
             {csrfError}
           </Alert>
         )}
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+        <Box borderWidth='1px' borderRadius='lg' overflow='hidden'>
           <MonacoEditor
-            language="typescript"
+            language='typescript'
             value={code}
             onChange={handleEditorChange}
             options={{
@@ -163,31 +200,20 @@ export const TypeScriptEditor = ({
         <Box>
           <HStack spacing={4}>
             <Button
-              colorScheme="blue"
+              colorScheme='blue'
               onClick={handleTypeCheck}
-              size="lg"
+              size='lg'
               isDisabled={!!csrfError || finished}
             >
               型チェック
             </Button>
-            <Button
-              colorScheme="gray"
-              onClick={handleSkip}
-              size="lg"
-              isDisabled={finished}
-            >
+            <Button colorScheme='gray' onClick={handleSkip} size='lg' isDisabled={finished}>
               次の問題へ
             </Button>
           </HStack>
           {result && (
-            <Box mt={4} p={4} bg="gray.50" borderRadius="md">
-              <Text
-                as="pre"
-                whiteSpace="pre-wrap"
-                wordBreak="break-word"
-                fontSize="sm"
-                m={0}
-              >
+            <Box mt={4} p={4} bg='gray.50' borderRadius='md'>
+              <Text as='pre' whiteSpace='pre-wrap' wordBreak='break-word' fontSize='sm' m={0}>
                 {result.message}
               </Text>
             </Box>
@@ -196,4 +222,4 @@ export const TypeScriptEditor = ({
       </VStack>
     </Container>
   );
-}; 
+};

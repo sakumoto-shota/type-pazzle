@@ -1,0 +1,25 @@
+# lefthook.yml
+# Git hooks configuration for Type Puzzle project
+
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{js,jsx,ts,tsx,json,md}"
+      run: yarn prettier --check {staged_files}
+      stage_fixed: false
+      
+    lint:
+      glob: "*.{js,jsx,ts,tsx}"
+      exclude: "*.test.{ts,tsx}|*.spec.{ts,tsx}"
+      run: yarn eslint {staged_files}
+      stage_fixed: false
+      
+    typecheck:
+      run: yarn tsc
+
+pre-push:
+  parallel: false
+  commands:
+    build:
+      run: yarn build

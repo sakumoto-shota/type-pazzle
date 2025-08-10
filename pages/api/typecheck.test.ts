@@ -1,5 +1,6 @@
 import handler from './typecheck';
 import { describe, it, expect, vi } from 'vitest';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const createMockReqRes = (code: string) => {
   const req = {
@@ -7,11 +8,11 @@ const createMockReqRes = (code: string) => {
     body: { code },
     headers: { 'x-csrf-token': 'token' },
     cookies: { 'csrf-token': 'token' },
-  } as any;
+  } as unknown as NextApiRequest;
 
   const json = vi.fn();
   const status = vi.fn(() => ({ json }));
-  const res = { status } as any;
+  const res = { status } as unknown as NextApiResponse;
   return { req, res, json, status };
 };
 

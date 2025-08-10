@@ -73,4 +73,52 @@ export const resetProgress = (): void => {
   const zeroScores = new Array<number>(TOTAL_LEVELS).fill(0);
   setScores(zeroScores);
   setLevel(1);
+  setResults({});
+};
+
+// 詳細な結果を保存する型定義
+export interface PuzzleResult {
+  answer: boolean;
+  puzzleIndex: number;
+  description?: string;
+}
+
+export interface LevelResults {
+  [level: string]: PuzzleResult[];
+}
+
+// 詳細な結果を取得
+export const getResults = (): LevelResults | null => {
+  if (typeof document === 'undefined' || !document.cookie) {
+    return null;
+  }
+  const cookie = document.cookie
+    .split(';')
+    .map((c) => c.trim())
+    .find((c) => c.startsWith('results='));
+  if (!cookie) {
+    return null;
+  }
+  try {
+    const encoded = cookie.split('=')[1];
+    const decoded = decodeURIComponent(encoded);
+    return JSON.parse(decoded);
+  } catch (e) {
+    // Failed to parse results cookie
+    return null;
+  }
+};
+
+// 詳細な結果を保存
+export const setResults = (results: LevelResults): void => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+  try {
+    const json = JSON.stringify(results);
+    const encoded = encodeURIComponent(json);
+    document.cookie = `results=${encoded}; path=/; max-age=86400`; // 1日保存
+  } catch (e) {
+    // Failed to save results cookie
+  }
 };

@@ -14,23 +14,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const csrfToken = req.headers['x-csrf-token'] ?? '';
     const cookieToken = req.cookies['csrf-token'] ?? '';
     if (!csrfToken || !cookieToken) {
-      res.status(403).json({ 
+      res.status(403).json({
         error: 'CSRFトークンが無効です',
         details: {
           headerToken: csrfToken,
-          cookieToken: cookieToken
-        }
+          cookieToken: cookieToken,
+        },
       });
       return;
     }
 
     if (csrfToken !== cookieToken) {
-      res.status(403).json({ 
+      res.status(403).json({
         error: 'CSRFトークンが一致しません',
         details: {
           headerToken: csrfToken,
-          cookieToken: cookieToken
-        }
+          cookieToken: cookieToken,
+        },
       });
       return;
     }
@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(400).json({ error: 'anyは使用できません' });
       return;
     }
-    const fileName = 'index.ts';
+    const fileName = 'index.d.ts';
     const libFileName = 'lib.d.ts';
 
     const compilerOptions: ts.CompilerOptions = {
@@ -59,6 +59,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       esModuleInterop: true,
       strict: true,
       skipLibCheck: true,
+      allowUnreachableCode: true,
+      noImplicitAny: true,
+      strictNullChecks: true,
+      noUnusedLocals: false,
+      noUnusedParameters: false,
     };
 
     const host: ts.CompilerHost = {
@@ -97,11 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       result:
         diagnostics.length === 0
           ? '✅ 型チェック成功!'
-          : diagnostics
-              .map((d) =>
-                ts.flattenDiagnosticMessageText(d.messageText, '\n'),
-              )
-              .join('\n'),
+          : diagnostics.map((d) => ts.flattenDiagnosticMessageText(d.messageText, '\n')).join('\n'),
     };
 
     const responseValidation = TypeCheckResponseSchema.safeParse(response);
@@ -114,4 +115,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (error) {
     res.status(500).json({ success: false, message: '型チェック中にエラーが発生しました。' });
   }
-} 
+}

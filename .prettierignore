@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Test artifacts
+coverage/
+test-results/
+
+# Lock files
+yarn.lock
+package-lock.json
+
+# Generated files
+*.tsbuildinfo
+.vercel/
+
+# Playwright
+e2e-results/
