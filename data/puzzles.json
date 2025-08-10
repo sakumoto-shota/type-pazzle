@@ -3,51 +3,126 @@
     {
       "level": 1,
       "puzzles": [
-        { "code": "type User = ???;\nconst u: User = { name: \"Taro\", age: 20 };", "explanation": "User型はnameとageを持つオブジェクト型を完成させます。" },
-        { "code": "type Point = ???;\nconst p: Point = { x: 1, y: 2 };", "explanation": "Point型はxとyを持つ二次元座標を表します。" },
-        { "code": "const greet: ??? = (name: string) => `Hello, ${name}`;", "explanation": "greetは文字列を返す関数型を指定します。" },
-        { "code": "type Pair<T> = ???;\nconst pair: Pair<number> = [1, 2];", "explanation": "ジェネリック型Pairは同種の2要素のタプルを表します。" },
-        { "code": "interface Animal { name: string }\ninterface Dog extends ??? { bark(): void }", "explanation": "DogはAnimalを継承してbarkメソッドを追加します。" }
+        {
+          "code": "type User = ???;\nconst u: User = { name: \"Taro\", age: 20 };",
+          "explanation": "User型はnameとageを持つオブジェクト型を完成させます。"
+        },
+        {
+          "code": "type Point = ???;\nconst p: Point = { x: 1, y: 2 };",
+          "explanation": "Point型はxとyを持つ二次元座標を表します。"
+        },
+        {
+          "code": "const greet: ??? = (name: string) => `Hello, ${name}`;",
+          "explanation": "greetは文字列を返す関数型を指定します。"
+        },
+        {
+          "code": "type Pair<T> = ???;\nconst pair: Pair<number> = [1, 2];",
+          "explanation": "ジェネリック型Pairは同種の2要素のタプルを表します。"
+        },
+        {
+          "code": "interface Animal { name: string }\ninterface Dog extends ??? { bark(): void }",
+          "explanation": "DogはAnimalを継承してbarkメソッドを追加します。"
+        }
       ]
     },
     {
       "level": 2,
       "puzzles": [
-        { "code": "type User = { name: string; age: number };\ntype ReadonlyUser = ???;", "explanation": "Readonlyユーティリティ型で全プロパティを読み取り専用にします。" },
-        { "code": "type Options = { a?: string; b?: number };\ntype RequiredOptions = ???;", "explanation": "Requiredユーティリティ型でオプショナルを必須にします。" },
-        { "code": "type User = { name: string; age: number };\ntype PartialUser = ???;", "explanation": "Partialユーティリティ型で全プロパティを任意にします。" },
-        { "code": "type User = { name: string; age: number };\ntype PickName = ???;", "explanation": "Pickユーティリティ型でnameプロパティのみを取り出します。" },
-        { "code": "type User = { name: string; age: number };\ntype RecordUser = ???;", "explanation": "Recordユーティリティ型でキーと値の型を指定します。" }
+        {
+          "code": "type User = { name: string; age: number };\ntype ReadonlyUser = ???;",
+          "explanation": "Readonlyユーティリティ型で全プロパティを読み取り専用にします。"
+        },
+        {
+          "code": "type Options = { a?: string; b?: number };\ntype RequiredOptions = ???;",
+          "explanation": "Requiredユーティリティ型でオプショナルを必須にします。"
+        },
+        {
+          "code": "type User = { name: string; age: number };\ntype PartialUser = ???;",
+          "explanation": "Partialユーティリティ型で全プロパティを任意にします。"
+        },
+        {
+          "code": "type User = { name: string; age: number };\ntype PickName = ???;",
+          "explanation": "Pickユーティリティ型でnameプロパティのみを取り出します。"
+        },
+        {
+          "code": "type User = { name: string; age: number };\ntype RecordUser = ???;",
+          "explanation": "Recordユーティリティ型でキーと値の型を指定します。"
+        }
       ]
     },
     {
       "level": 3,
       "puzzles": [
-        { "code": "function identity<T>(value: T): ???;", "explanation": "ジェネリック関数identityは入力と同じ型を返します。" },
-        { "code": "function wrapInArray<T>(value: T): ???;", "explanation": "値を配列に包んで返すため戻り値はT[]型です。" },
-        { "code": "interface Box<T> { value: T }\nfunction makeBox<T>(v: T): ???;", "explanation": "makeBoxは引数をBox<T>として返します。" },
-        { "code": "function first<T>(arr: T[]): ???;", "explanation": "配列の先頭要素を返すので戻り値はT型です。" },
-        { "code": "type Mapper<T, U> = ???;", "explanation": "MapperはTをUに変換する関数の型を表します。" }
+        {
+          "code": "function identity<T>(value: T): ???;",
+          "explanation": "ジェネリック関数identityは入力と同じ型を返します。"
+        },
+        {
+          "code": "function wrapInArray<T>(value: T): ???;",
+          "explanation": "値を配列に包んで返すため戻り値はT[]型です。"
+        },
+        {
+          "code": "interface Box<T> { value: T }\nfunction makeBox<T>(v: T): ???;",
+          "explanation": "makeBoxは引数をBox<T>として返します。"
+        },
+        {
+          "code": "function first<T>(arr: T[]): ???;",
+          "explanation": "配列の先頭要素を返すので戻り値はT型です。"
+        },
+        {
+          "code": "type Mapper<T, U> = ???;",
+          "explanation": "MapperはTをUに変換する関数の型を表します。"
+        }
       ]
     },
     {
       "level": 4,
       "puzzles": [
-        { "code": "type OnlyString<T> = ???;\ntype R = OnlyString<string | number | boolean>;", "explanation": "条件付き型を用いてstringのみを抽出します。" },
-        { "code": "type IsString<T> = ???;\ntype R = IsString<'a'>;", "explanation": "Tがstringであればtrueを返す条件付き型を作成します。" },
-        { "code": "type ExcludeNull<T> = ???;\ntype R = ExcludeNull<string | null>;", "explanation": "null型を除外する条件付き型を定義します。" },
-        { "code": "type IfElse<T, U> = ???;\ntype R = IfElse<true, number>;", "explanation": "真偽値Tで型Uまたはneverを返す条件付き型です。" },
-        { "code": "type Flatten<T> = ???;\ntype R = Flatten<string[]>;", "explanation": "配列が渡されたら要素の型を返すユーティリティ型です。" }
+        {
+          "code": "type OnlyString<T> = ???;\ntype R = OnlyString<string | number | boolean>;",
+          "explanation": "条件付き型を用いてstringのみを抽出します。"
+        },
+        {
+          "code": "type IsString<T> = ???;\ntype R = IsString<'a'>;",
+          "explanation": "Tがstringであればtrueを返す条件付き型を作成します。"
+        },
+        {
+          "code": "type ExcludeNull<T> = ???;\ntype R = ExcludeNull<string | null>;",
+          "explanation": "null型を除外する条件付き型を定義します。"
+        },
+        {
+          "code": "type IfElse<T, U> = ???;\ntype R = IfElse<true, number>;",
+          "explanation": "真偽値Tで型Uまたはneverを返す条件付き型です。"
+        },
+        {
+          "code": "type Flatten<T> = ???;\ntype R = Flatten<string[]>;",
+          "explanation": "配列が渡されたら要素の型を返すユーティリティ型です。"
+        }
       ]
     },
     {
       "level": 5,
       "puzzles": [
-        { "code": "type GetReturnType<T> = ???;\ntype R = GetReturnType<() => number>;", "explanation": "関数型Tの戻り値の型を取得します。" },
-        { "code": "type UnpackArray<T> = ???;\ntype R = UnpackArray<string[]>;", "explanation": "配列Tから要素の型を取り出します。" },
-        { "code": "type Params<T> = ???;\ntype R = Params<(a: number, b: string) => void>;", "explanation": "関数Tのパラメータ型のタプルを取得します。" },
-        { "code": "type InferBoxValue<T> = ???;\ntype R = InferBoxValue<{value: boolean}>;", "explanation": "オブジェクトのvalueプロパティから型を推論します。" },
-        { "code": "type ElementType<T> = ???;\ntype R = ElementType<NodeListOf<HTMLDivElement>>;", "explanation": "NodeListOfから要素型を取り出す条件付き型を定義します." }
+        {
+          "code": "type GetReturnType<T> = ???;\ntype R = GetReturnType<() => number>;",
+          "explanation": "関数型Tの戻り値の型を取得します。"
+        },
+        {
+          "code": "type UnpackArray<T> = ???;\ntype R = UnpackArray<string[]>;",
+          "explanation": "配列Tから要素の型を取り出します。"
+        },
+        {
+          "code": "type Params<T> = ???;\ntype R = Params<(a: number, b: string) => void>;",
+          "explanation": "関数Tのパラメータ型のタプルを取得します。"
+        },
+        {
+          "code": "type InferBoxValue<T> = ???;\ntype R = InferBoxValue<{value: boolean}>;",
+          "explanation": "オブジェクトのvalueプロパティから型を推論します。"
+        },
+        {
+          "code": "type ElementType<T> = ???;\ntype R = ElementType<NodeListOf<HTMLDivElement>>;",
+          "explanation": "NodeListOfから要素型を取り出す条件付き型を定義します."
+        }
       ]
     }
   ]

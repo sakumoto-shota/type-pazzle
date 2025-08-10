@@ -13,14 +13,20 @@ export const useTypeChecker = () => {
       // リクエストのバリデーション
       const requestValidation = TypeCheckRequestSchema.safeParse({ code });
       if (!requestValidation.success) {
-        setResult({ success: false, message: `❌ エラー: ${requestValidation.error.errors[0].message}` });
+        setResult({
+          success: false,
+          message: `❌ エラー: ${requestValidation.error.errors[0].message}`,
+        });
         return;
       }
 
       // CSRFトークンの取得
       const csrfToken = getCsrfToken();
       if (!csrfToken) {
-        setResult({ success: false, message: '❌ エラー: CSRFトークンが見つかりません。ページを再読み込みしてください。' });
+        setResult({
+          success: false,
+          message: '❌ エラー: CSRFトークンが見つかりません。ページを再読み込みしてください。',
+        });
         return;
       }
 
@@ -35,7 +41,10 @@ export const useTypeChecker = () => {
       });
 
       if (res.status === 403) {
-        setResult({ success: false, message: '❌ エラー: CSRFトークンが無効です。ページを再読み込みしてください。' });
+        setResult({
+          success: false,
+          message: '❌ エラー: CSRFトークンが無効です。ページを再読み込みしてください。',
+        });
         return;
       }
 
@@ -69,4 +78,4 @@ export const useTypeChecker = () => {
   };
 
   return { result, checkType };
-}; 
+};

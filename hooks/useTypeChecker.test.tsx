@@ -99,4 +99,4 @@ describe('useTypeChecker', () => {
       message: expect.stringContaining('❌ エラー: 型チェック中にエラーが発生しました。'),
     });
   });
-}); 
+});
