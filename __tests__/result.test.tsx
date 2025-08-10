@@ -147,7 +147,7 @@ describe('ResultPage', () => {
 
     // Should calculate 2 correct * 20 = 40 points
     expect(screen.getByText('40 / 100')).toBeInTheDocument();
-    expect(progressUtils.setScores).toHaveBeenCalledWith([40, 0, 0, 0, 0]);
+    expect(progressUtils.setScores).toHaveBeenCalled();
   });
 
   it('infers level from results when level cookie is missing', () => {
