@@ -2,15 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import ResultPage from './result';
-import * as progressUtils from '../src/utils/progress';
+import ResultPage from '../../pages/result';
+import * as progressUtils from '../../src/utils/progress';
 import '@testing-library/jest-dom';
 
 vi.mock('next/router', () => ({
   useRouter: vi.fn(),
 }));
 
-vi.mock('../src/utils/progress', () => ({
+vi.mock('../../src/utils/progress', () => ({
   getLevel: vi.fn(),
   getScores: vi.fn(),
   setLevel: vi.fn(),
@@ -18,7 +18,7 @@ vi.mock('../src/utils/progress', () => ({
   getResults: vi.fn(),
 }));
 
-vi.mock('../src/hooks/useScoreAnimation', () => ({
+vi.mock('../../src/hooks/useScoreAnimation', () => ({
   useScoreAnimation: (score: number) => score,
 }));
 

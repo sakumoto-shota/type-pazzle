@@ -39,7 +39,7 @@ const { chromium } = require('@playwright/test');
   ]);
 
   // リザルト画面に遷移
-  await page.goto('http://localhost:3001/result?level=1');
+  await page.goto('http://localhost:3002/result?level=1');
   await page.waitForSelector('h2:has-text("Lv1 結果")');
   await page.waitForTimeout(1000);
   
