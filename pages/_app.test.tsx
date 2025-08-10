@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
 import MyApp from './_app';
 import { describe, it, expect, vi } from 'vitest';
+import type { Router } from 'next/router';
+import type { NextComponentType, NextPageContext } from 'next';
 
 // Mock next/router
 vi.mock('next/router', () => ({
@@ -18,8 +20,8 @@ vi.mock('next/router', () => ({
 describe('MyApp', () => {
   it('renders without crashing', () => {
     const mockPageProps = {};
-    const MockComponent = () => <div>Test Component</div>;
-    const mockRouter = {} as any;
+    const MockComponent: NextComponentType<NextPageContext> = () => <div>Test Component</div>;
+    const mockRouter = {} as Router;
 
     const { container } = render(
       <MyApp Component={MockComponent} pageProps={mockPageProps} router={mockRouter} />,

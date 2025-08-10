@@ -1,7 +1,7 @@
 import eslint from '@eslint/js';
 import nextPlugin from '@next/eslint-plugin-next';
 import prettierConfig from 'eslint-config-prettier';
-import * as tseslint from '@typescript-eslint/eslint-plugin';
+import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
 export default [
@@ -40,6 +40,7 @@ export default [
       'spaced-comment': ['warn', 'always', { 'markers': ['/'] }],
       'eqeqeq': ['error', 'allow-null'],
       '@typescript-eslint/no-extra-semi': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
     }
   },
   prettierConfig
