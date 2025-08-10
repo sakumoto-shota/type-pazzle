@@ -26,3 +26,4 @@ task/
 # test
 playwright-report/
 __test__/
+test-results/
