@@ -7,6 +7,7 @@ import {
   setLevel,
   setScores,
   resetProgress,
+  getResults,
 } from '../src/utils/progress';
 
 export default function PlayPage() {
@@ -52,6 +53,7 @@ export default function PlayPage() {
       <TypeScriptEditor
         initialLevel={initialLevel}
         initialScores={initialScores}
+        initialResults={getResults() ?? undefined}
       />
     </>
   );

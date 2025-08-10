@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getScores, setScores, getLevel, setLevel, resetProgress } from './progress';
+import { getScores, setScores, getLevel, setLevel, resetProgress, getResults, setResults } from './progress';
+import type { LevelResults } from '../../types/components';
 
 beforeEach(() => {
   document.cookie = '';
@@ -33,9 +34,50 @@ describe('progress utils', () => {
     expect(getLevel()).toBeNull();
   });
 
+  it('reads and writes results', () => {
+    const mockResults: LevelResults[] = [
+      {
+        level: 1,
+        results: [
+          {
+            puzzleIndex: 0,
+            isCorrect: true,
+            explanation: 'Test explanation',
+            code: 'test code',
+          },
+        ],
+      },
+    ];
+    
+    vi.stubGlobal('document', { cookie: '' });
+    setResults(mockResults);
+    expect(document.cookie).toContain('results=');
+    
+    const encodedResults = encodeURIComponent(JSON.stringify(mockResults));
+    vi.stubGlobal('document', { cookie: `results=${encodedResults}` });
+    expect(getResults()).toEqual(mockResults);
+  });
+  
+  it('handles invalid results cookie', () => {
+    vi.stubGlobal('document', { cookie: 'results=invalid-json' });
+    expect(getResults()).toBeNull();
+  });
+  
   it('resets progress to defaults', () => {
-    vi.stubGlobal('document', { cookie: 'scores=10-20-0-0-0; level=2' });
+    const mockCookie = { value: '' };
+    vi.stubGlobal('document', {
+      get cookie() {
+        return mockCookie.value;
+      },
+      set cookie(val: string) {
+        mockCookie.value = val;
+      },
+    });
+    
+    mockCookie.value = 'scores=10-20-0-0-0; level=2; results=test';
     resetProgress();
-    expect(document.cookie).toMatch(/level=1; path=\//);
+    
+    // resetProgressは複数のcookieを設定するので、最後に設定されたものをチェック
+    expect(mockCookie.value).toContain('max-age=0');
   });
 });

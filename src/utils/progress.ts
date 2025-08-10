@@ -1,4 +1,5 @@
 import puzzlesData from '../../data/puzzles.json';
+import type { LevelResults } from '../../types/components';
 
 const TOTAL_LEVELS = puzzlesData.levels.length;
 
@@ -66,6 +67,34 @@ export const setLevel = (level: number | null): void => {
   }
 };
 
+export const getResults = (): LevelResults[] | null => {
+  if (typeof document === 'undefined' || !document.cookie) {
+    return null;
+  }
+  const cookie = document.cookie
+    .split(';')
+    .map((c) => c.trim())
+    .find((c) => c.startsWith('results='));
+  if (!cookie) {
+    return null;
+  }
+  try {
+    const encoded = cookie.split('=')[1];
+    const decoded = decodeURIComponent(encoded);
+    return JSON.parse(decoded) as LevelResults[];
+  } catch {
+    return null;
+  }
+};
+
+export const setResults = (results: LevelResults[]): void => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+  const encoded = encodeURIComponent(JSON.stringify(results));
+  document.cookie = `results=${encoded}; path=/`;
+};
+
 export const resetProgress = (): void => {
   if (typeof document === 'undefined') {
     return;
@@ -73,4 +102,5 @@ export const resetProgress = (): void => {
   const zeroScores = new Array<number>(TOTAL_LEVELS).fill(0);
   setScores(zeroScores);
   setLevel(1);
+  document.cookie = 'results=; path=/; max-age=0';
 };

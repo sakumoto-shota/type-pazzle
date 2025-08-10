@@ -20,25 +20,33 @@ type Puzzles = typeof puzzlesData.levels;
 
 const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
-import { setLevel, setScores as setScoresCookie } from '../src/utils/progress';
+import { setLevel, setScores as setScoresCookie, setResults, getResults } from '../src/utils/progress';
 
 import { useRouter } from 'next/router';
-import type { EditorProps } from '../types/components';
+import type { EditorProps, PuzzleResult, LevelResults } from '../types/components';
 
 export const TypeScriptEditor = ({
   initialLevel = 1,
   initialScores,
+  initialResults,
 }: EditorProps) => {
   const [levelIndex] = useState(initialLevel - 1);
   const [puzzleIndex, setPuzzleIndex] = useState(0);
   const [code, setCode] = useState<string>(levels[initialLevel - 1].puzzles[0].code);
-  const [finished, setFinished] = useState(false);
+  const [finished] = useState(false);
   const { result, checkType } = useTypeChecker();
   const [csrfError, setCsrfError] = useState<string | null>(null);
   // eslint-disable-next-line no-unused-vars
   const [scores, setScores] = useState<number[]>(
     initialScores ?? new Array(levels.length).fill(0)
   );
+  const [levelResults, setLevelResults] = useState<PuzzleResult[]>(() => {
+    if (initialResults) {
+      const currentLevelResult = initialResults.find(r => r.level === initialLevel);
+      return currentLevelResult?.results ?? [];
+    }
+    return [];
+  });
   const monaco = useMonaco();
   const router = useRouter();
 
@@ -53,12 +61,22 @@ export const TypeScriptEditor = ({
   const goToNext = () => {
     if (puzzleIndex < levels[levelIndex].puzzles.length - 1) {
       setPuzzleIndex((p) => p + 1);
-    } else if (levelIndex < levels.length - 1) {
-      setLevel(levelIndex + 1);
-      router.push('/result');
     } else {
-      setLevel(null);
-      setFinished(true);
+      // Save level results before navigating
+      const allResults = getResults() ?? [];
+      const currentLevelResult: LevelResults = {
+        level: levelIndex + 1,
+        results: levelResults,
+      };
+      const updatedResults = [...allResults.filter(r => r.level !== levelIndex + 1), currentLevelResult];
+      setResults(updatedResults);
+      
+      if (levelIndex < levels.length - 1) {
+        setLevel(levelIndex + 2);
+      } else {
+        setLevel(null);
+      }
+      router.push('/result');
     }
   };
 
@@ -87,6 +105,15 @@ export const TypeScriptEditor = ({
     if (!result) {
       return;
     }
+
+    // Record puzzle result
+    const puzzleResult: PuzzleResult = {
+      puzzleIndex,
+      isCorrect: result.success,
+      explanation: levels[levelIndex].puzzles[puzzleIndex].explanation,
+      code: levels[levelIndex].puzzles[puzzleIndex].code,
+    };
+    setLevelResults((prev) => [...prev, puzzleResult]);
 
     if (result.success) {
       setScores((prev) => {

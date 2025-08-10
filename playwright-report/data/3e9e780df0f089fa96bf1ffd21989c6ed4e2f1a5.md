@@ -1,0 +1,84 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - heading "Type Puzzle" [level=2]:
+    - link "Type Puzzle":
+      - /url: /
+- main:
+  - heading "Lv1 結果" [level=2]
+  - paragraph: 80 / 100
+  - heading "問題ごとの結果" [level=2]
+  - heading "問題 1 正解" [level=2]:
+    - button "問題 1 正解":
+      - img
+      - paragraph: 問題 1
+      - text: 正解
+  - heading "問題 2 正解" [level=2]:
+    - button "問題 2 正解":
+      - img
+      - paragraph: 問題 2
+      - text: 正解
+  - heading "問題 3 不正解" [level=2]:
+    - button "問題 3 不正解":
+      - img
+      - paragraph: 問題 3
+      - text: 不正解
+  - heading "問題 4 正解" [level=2]:
+    - button "問題 4 正解":
+      - img
+      - paragraph: 問題 4
+      - text: 正解
+  - heading "問題 5 正解" [level=2]:
+    - button "問題 5 正解":
+      - img
+      - paragraph: 問題 5
+      - text: 正解
+  - heading "全レベルのスコア" [level=2]
+  - list:
+    - listitem:
+      - paragraph: "Lv1: 80 / 100"
+      - text: 4/5 問正解
+    - listitem:
+      - paragraph: "Lv2: 60 / 100"
+    - listitem:
+      - paragraph: "Lv3: 40 / 100"
+    - listitem:
+      - paragraph: "Lv4: 20 / 100"
+    - listitem:
+      - paragraph: "Lv5: 100 / 100"
+  - button "次のレベルへ"
+- contentinfo:
+  - paragraph: © 2025 Type Puzzle
+- alert
+- region "Notifications-top"
+- region "Notifications-top-left"
+- region "Notifications-top-right"
+- region "Notifications-bottom-left"
+- region "Notifications-bottom"
+- region "Notifications-bottom-right"
+- dialog "Unhandled Runtime Error":
+  - navigation:
+    - button "previous" [disabled]:
+      - img "previous"
+    - button "next":
+      - img "next"
+    - text: 1 of 3 errors Next.js (14.2.28) is outdated
+    - link "(learn more)":
+      - /url: https://nextjs.org/docs/messages/version-staleness
+  - button "Close"
+  - heading "Unhandled Runtime Error" [level=1]
+  - paragraph:
+    - text: "Error: Text content does not match server-rendered HTML. See more info here:"
+    - link "https://nextjs.org/docs/messages/react-hydration-error":
+      - /url: https://nextjs.org/docs/messages/react-hydration-error
+  - paragraph: "Text content did not match. Server: \"結果\" Client: \"Lv1 結果\""
+  - button:
+    - img
+  - code: ... <eval> <div> <Heading2> <ChakraComponent2> <eval> <h2> "結果" "Lv1 結果"
+  - heading "Call Stack" [level=2]
+  - group:
+    - img
+    - img
+    - text: React
+```
