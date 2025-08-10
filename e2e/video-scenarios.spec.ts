@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { clearCookies, fillEditorAndCheck } from './helpers';
-import { testAnswers } from './test-answers';
+import { ANSWERS as testAnswers } from './test-answers';
 
 // Configure this test to always record video
 test.use({
@@ -33,26 +33,17 @@ test.describe('Video Recording Scenarios', () => {
 
     for (let i = 0; i < answers.length; i++) {
       // Wait a bit before answering for better video visibility
-      await page.waitForTimeout(1000);
-
-      // Clear editor and type answer
-      await page.click('.monaco-editor .view-lines');
-      await page.keyboard.press('Control+A');
-      await page.keyboard.press('Delete');
-      await page.keyboard.type(answers[i]);
-
-      // Wait for visibility
       await page.waitForTimeout(500);
 
-      // Click check button
-      await page.click('text=チェック');
+      // Use optimized editor filling
+      await fillEditorAndCheck(page, answers[i], true);
 
-      // Wait for result
-      await page.waitForTimeout(2000);
+      // Wait for result processing
+      await page.waitForTimeout(1500);
 
       // If not the last question, wait for automatic progression
       if (i < answers.length - 1) {
-        await page.waitForTimeout(3000);
+        await page.waitForTimeout(2000);
       }
     }
 
@@ -110,26 +101,17 @@ test.describe('Video Recording Scenarios', () => {
 
     for (let i = 0; i < answers.length; i++) {
       // Wait a bit before answering for better video visibility
-      await page.waitForTimeout(1000);
-
-      // Clear editor and type answer
-      await page.click('.monaco-editor .view-lines');
-      await page.keyboard.press('Control+A');
-      await page.keyboard.press('Delete');
-      await page.keyboard.type(answers[i]);
-
-      // Wait for visibility
       await page.waitForTimeout(500);
 
-      // Click check button
-      await page.click('text=チェック');
+      // Use optimized editor filling
+      await fillEditorAndCheck(page, answers[i], true);
 
-      // Wait for result
-      await page.waitForTimeout(2000);
+      // Wait for result processing
+      await page.waitForTimeout(1500);
 
       // If not the last question, wait for automatic progression
       if (i < answers.length - 1) {
-        await page.waitForTimeout(3000);
+        await page.waitForTimeout(2000);
       }
     }
 

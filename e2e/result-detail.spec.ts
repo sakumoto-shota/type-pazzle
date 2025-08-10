@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { clearCookies, fillEditorAndCheck } from './helpers';
-import { testAnswers } from './test-answers';
+import { ANSWERS as testAnswers } from './test-answers';
 
 test.describe('Result Detail Display', () => {
   test.beforeEach(async ({ page }) => {

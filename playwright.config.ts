@@ -25,7 +25,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npm run dev',
+    command: 'yarn dev',
     port: 3000,
     reuseExistingServer: !process.env.CI,
   },

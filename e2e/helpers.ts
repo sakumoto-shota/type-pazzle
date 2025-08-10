@@ -1,20 +1,34 @@
 import { expect, type Page } from '@playwright/test';
-import { testAnswers } from './test-answers';
+import { ANSWERS as testAnswers } from './test-answers';
 
 export async function clearCookies(page: Page) {
   await page.context().clearCookies();
 }
 
 export async function fillEditorAndCheck(page: Page, answer: string, shouldCheck = true) {
-  // Clear editor and type answer
-  await page.click('.monaco-editor .view-lines');
-  await page.keyboard.press('Control+A');
-  await page.keyboard.press('Delete');
-  await page.keyboard.type(answer);
+  // Use Monaco Editor API to directly set content - much faster than typing
+  await page.evaluate((newCode) => {
+    const editor = (window as any).monaco?.editor?.getModels?.()?.[0];
+    if (editor) {
+      editor.setValue(newCode);
+    } else {
+      // Fallback to keyboard simulation if Monaco API not available
+      const editorElement = document.querySelector('.monaco-editor .view-lines') as HTMLElement;
+      if (editorElement) {
+        editorElement.click();
+        document.execCommand('selectAll');
+        document.execCommand('delete');
+        document.execCommand('insertText', false, newCode);
+      }
+    }
+  }, answer);
+
+  // Small delay to ensure editor is updated
+  await page.waitForTimeout(100);
 
   if (shouldCheck) {
     // Click check button
-    await page.click('text=��ï');
+    await page.click('text=チェック');
 
     // Wait for result
     await page.waitForTimeout(1000);
