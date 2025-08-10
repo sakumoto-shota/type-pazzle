@@ -10,4 +10,4 @@ export const TypeCheckResponseSchema = z.object({
 });
 
 export type TypeCheckRequest = z.infer<typeof TypeCheckRequestSchema>;
-export type TypeCheckResponse = z.infer<typeof TypeCheckResponseSchema>; 
+export type TypeCheckResponse = z.infer<typeof TypeCheckResponseSchema>;

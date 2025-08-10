@@ -1,0 +1,48 @@
+{
+  "levels": [
+    {
+      "level": 1,
+      "answers": [
+        "{ name: string; age: number }",
+        "{ x: number; y: number }",
+        "(name: string) => string",
+        "[T, T]",
+        "Animal"
+      ]
+    },
+    {
+      "level": 2,
+      "answers": [
+        "Readonly<User>",
+        "Required<Options>",
+        "Partial<User>",
+        "Pick<User, 'name'>",
+        "Record<string, User>"
+      ]
+    },
+    {
+      "level": 3,
+      "answers": ["T", "T[]", "Box<T>", "T", "(value: T) => U"]
+    },
+    {
+      "level": 4,
+      "answers": [
+        "T extends string ? T : never",
+        "T extends string ? true : false",
+        "T extends null ? never : T",
+        "T extends true ? U : never",
+        "T extends (infer U)[] ? U : T"
+      ]
+    },
+    {
+      "level": 5,
+      "answers": [
+        "T extends (...a: infer A) => infer R ? R : never",
+        "T extends readonly (infer U)[] ? U : never",
+        "T extends (...a: infer P) => infer R ? P : never",
+        "T extends { value: infer V } ? V : never",
+        "T extends NodeListOf<infer E> ? E : never"
+      ]
+    }
+  ]
+}

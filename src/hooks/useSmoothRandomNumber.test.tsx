@@ -11,7 +11,8 @@ describe('useSmoothRandomNumber', () => {
     // requestAnimationFrame/cancelAnimationFrameをsetTimeout/clearTimeoutでモック
     originalRAF = globalThis.requestAnimationFrame;
     originalCAF = globalThis.cancelAnimationFrame;
-    globalThis.requestAnimationFrame = (cb) => setTimeout(() => cb(Date.now()), 0) as unknown as number;
+    globalThis.requestAnimationFrame = (cb) =>
+      setTimeout(() => cb(Date.now()), 0) as unknown as number;
     globalThis.cancelAnimationFrame = (id) => clearTimeout(id as unknown as number);
   });
 

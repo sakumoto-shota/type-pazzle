@@ -14,6 +14,7 @@ import MonacoEditor, { useMonaco } from '@monaco-editor/react';
 import { useState, useEffect } from 'react';
 import { useTypeChecker } from '../hooks/useTypeChecker';
 import puzzlesData from '../data/puzzles.json';
+import answersData from '../data/answers.json';
 
 type Puzzles = typeof puzzlesData.levels;
 
@@ -93,11 +94,17 @@ export const TypeScriptEditor = ({ initialLevel = 1, initialScores }: EditorProp
     const isLastQuestion = puzzleIndex === levels[levelIndex].puzzles.length - 1;
     const levelKey = String(levelIndex + 1);
 
+    // 現在の問題の解説と正解を取得
+    const currentPuzzle = levels[levelIndex].puzzles[puzzleIndex];
+    const currentAnswer = answersData.levels[levelIndex]?.answers[puzzleIndex] || '';
+
     // 詳細な結果を保存
     const newResult: PuzzleResult = {
       answer: result.success,
       puzzleIndex: puzzleIndex,
-      description: result.message,
+      description: currentPuzzle.explanation,
+      userAnswer: code,
+      correctAnswer: currentAnswer,
     };
 
     // 現在のレベルの結果を更新

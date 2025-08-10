@@ -48,4 +48,4 @@ export type CompilerOptions = {
   moduleResolution: number;
   esModuleInterop: boolean;
   strict: boolean;
-} 
+};
