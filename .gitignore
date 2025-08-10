@@ -26,4 +26,8 @@ task/
 # test
 playwright-report/
 __test__/
-test-results/tsconfig.tsbuildinfo
+test-results/
+
+# TypeScript build info
+*.tsbuildinfo
+tsconfig.tsbuildinfo
