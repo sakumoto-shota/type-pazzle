@@ -20,7 +20,14 @@ type Puzzles = typeof puzzlesData.levels;
 
 const levels: Puzzles = puzzlesData.levels;
 import { getCsrfToken } from '../src/utils/csrf';
-import { setLevel, setScores as setScoresCookie } from '../src/utils/progress';
+import { 
+  setLevel, 
+  setScores as setScoresCookie,
+  getResults,
+  setResults,
+  type LevelResults,
+  type PuzzleResult
+} from '../src/utils/progress';
 
 import { useRouter } from 'next/router';
 import type { EditorProps } from '../types/components';
@@ -39,6 +46,7 @@ export const TypeScriptEditor = ({
   const [scores, setScores] = useState<number[]>(
     initialScores ?? new Array(levels.length).fill(0)
   );
+  const [levelResults, setLevelResults] = useState<LevelResults>(getResults() || {});
   const monaco = useMonaco();
   const router = useRouter();
 
@@ -88,7 +96,36 @@ export const TypeScriptEditor = ({
       return;
     }
 
+    const isLastQuestion = puzzleIndex === levels[levelIndex].puzzles.length - 1;
+    const levelKey = String(levelIndex + 1);
+
+    // 詳細な結果を保存
+    const newResult: PuzzleResult = {
+      answer: result.success,
+      puzzleIndex: puzzleIndex,
+      description: result.message
+    };
+
+    // 現在のレベルの結果を更新
+    const updatedResults = { ...levelResults };
+    if (!updatedResults[levelKey]) {
+      updatedResults[levelKey] = [];
+    }
+    
+    // 既存の結果を更新または追加
+    const existingIndex = updatedResults[levelKey].findIndex(r => r.puzzleIndex === puzzleIndex);
+    if (existingIndex >= 0) {
+      updatedResults[levelKey][existingIndex] = newResult;
+    } else {
+      updatedResults[levelKey].push(newResult);
+    }
+    
+    // 結果を保存
+    setLevelResults(updatedResults);
+    setResults(updatedResults);
+
     if (result.success) {
+      // スコアを更新してCookieに保存
       setScores((prev) => {
         const arr = [...prev];
         arr[levelIndex] = Math.min(arr[levelIndex] + 20, 100);
@@ -97,7 +134,14 @@ export const TypeScriptEditor = ({
       });
     }
 
-    goToNext();
+    // 最後の問題の場合は遅延を入れてCookie保存を確実にする
+    if (isLastQuestion) {
+      setTimeout(() => {
+        goToNext();
+      }, 1000); // 1秒待つ
+    } else {
+      goToNext();
+    }
   }, [result, levelIndex]);
 
   const handleEditorChange = (value: string | undefined) => {

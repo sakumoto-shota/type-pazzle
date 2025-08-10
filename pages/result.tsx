@@ -17,6 +17,7 @@ import {
   getScores,
   setLevel,
   setScores,
+  getResults,
 } from '../src/utils/progress';
 
 export default function ResultPage() {
@@ -25,10 +26,26 @@ export default function ResultPage() {
   const levelParam = router.query.level;
   const cookieScores = getScores() ?? [];
   const cookieLevel = getLevel();
+  const detailedResults = getResults();
+  
+  // 詳細な結果からスコアを計算
+  let calculatedScores = [...cookieScores];
+  if (detailedResults && cookieLevel) {
+    const levelKey = String(cookieLevel);
+    const levelResults = detailedResults[levelKey];
+    if (levelResults) {
+      // 正解数をカウント
+      const correctCount = levelResults.filter(r => r.answer).length;
+      calculatedScores[cookieLevel - 1] = correctCount * 20;
+      // 計算したスコアをCookieに保存
+      setScores(calculatedScores);
+    }
+  }
+  
   const scores =
     typeof scoresParam === 'string'
       ? scoresParam.split('-').map((s) => parseInt(s, 10))
-      : cookieScores;
+      : calculatedScores;
   const level =
     typeof levelParam === 'string'
       ? parseInt(levelParam, 10)
