@@ -1,20 +1,11 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useScoreAnimation } from './useScoreAnimation';
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 describe('useScoreAnimation', () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
-  it('returns final score after duration', () => {
-    const { result } = renderHook(() => useScoreAnimation(50, 1000));
-    act(() => {
-      vi.advanceTimersByTime(1000);
-    });
+  it('returns final score immediately', () => {
+    const { result } = renderHook(() => useScoreAnimation(50));
+    // アニメーションを削除したので、即座に最終スコアが返される
     expect(result.current).toBe(50);
   });
 });
