@@ -39,25 +39,30 @@ describe('TypeScriptEditor', () => {
   it('displays all 5 questions in each level', () => {
     document.cookie = 'csrf-token=test';
     
+    // 各レベルを個別にレンダリングしてテスト
     // Lv1のテスト
-    const { rerender } = render(<TypeScriptEditor initialLevel={1} />, { wrapper });
+    const { unmount: unmount1 } = render(<TypeScriptEditor initialLevel={1} />, { wrapper });
     expect(screen.getByText('TypeScript 型パズル - Lv1 (1/5)')).toBeInTheDocument();
     expect(screen.getByText('進捗: 1/5')).toBeInTheDocument();
+    unmount1();
     
     // Lv2のテスト
-    rerender(<TypeScriptEditor initialLevel={2} />);
+    const { unmount: unmount2 } = render(<TypeScriptEditor initialLevel={2} />, { wrapper });
     expect(screen.getByText('TypeScript 型パズル - Lv2 (1/5)')).toBeInTheDocument();
+    unmount2();
     
     // Lv3のテスト
-    rerender(<TypeScriptEditor initialLevel={3} />);
+    const { unmount: unmount3 } = render(<TypeScriptEditor initialLevel={3} />, { wrapper });
     expect(screen.getByText('TypeScript 型パズル - Lv3 (1/5)')).toBeInTheDocument();
+    unmount3();
     
     // Lv4のテスト
-    rerender(<TypeScriptEditor initialLevel={4} />);
+    const { unmount: unmount4 } = render(<TypeScriptEditor initialLevel={4} />, { wrapper });
     expect(screen.getByText('TypeScript 型パズル - Lv4 (1/5)')).toBeInTheDocument();
+    unmount4();
     
     // Lv5のテスト
-    rerender(<TypeScriptEditor initialLevel={5} />);
+    render(<TypeScriptEditor initialLevel={5} />, { wrapper });
     expect(screen.getByText('TypeScript 型パズル - Lv5 (1/5)')).toBeInTheDocument();
   });
 

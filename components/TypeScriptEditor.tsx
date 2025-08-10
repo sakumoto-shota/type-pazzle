@@ -136,7 +136,7 @@ export const TypeScriptEditor = ({
 
     // 最後の問題の場合は遅延を入れてCookie保存を確実にする
     if (isLastQuestion) {
-      setTimeout(() => {
+      window.setTimeout(() => {
         goToNext();
       }, 1000); // 1秒待つ
     } else {

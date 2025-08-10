@@ -104,7 +104,7 @@ export const getResults = (): LevelResults | null => {
     const decoded = decodeURIComponent(encoded);
     return JSON.parse(decoded);
   } catch (e) {
-    console.error('Failed to parse results cookie:', e);
+    // Failed to parse results cookie
     return null;
   }
 };
@@ -119,6 +119,6 @@ export const setResults = (results: LevelResults): void => {
     const encoded = encodeURIComponent(json);
     document.cookie = `results=${encoded}; path=/; max-age=86400`; // 1日保存
   } catch (e) {
-    console.error('Failed to save results cookie:', e);
+    // Failed to save results cookie
   }
 };

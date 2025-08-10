@@ -2,7 +2,6 @@
 
 export const useScoreAnimation = (
   finalScore: number,
-  duration = 3000,
 ): number => {
   // アニメーションを削除し、即座に最終スコアを返す
   return finalScore;
