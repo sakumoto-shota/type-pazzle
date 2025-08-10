@@ -11,7 +11,9 @@ export default [
       'node_modules/',
       'dist/',
       'out/',
-      'next.config.js'
+      'next.config.js',
+      'e2e/**/*',
+      'playwright.config.ts'
     ]
   },
   eslint.configs.recommended,
