@@ -38,4 +38,4 @@ vi.stubGlobal('fetch', vi.fn());
 // テスト環境の設定
 vi.stubGlobal('document', dom.window.document);
 vi.stubGlobal('window', dom.window);
-vi.stubGlobal('navigator', dom.window.navigator); 
+vi.stubGlobal('navigator', dom.window.navigator);

@@ -4,8 +4,8 @@ import { useErrorToast } from '../hooks/useErrorToast';
 import { getCsrfToken } from '../utils/csrf';
 
 export default function CodeEditor() {
-  const [code, setCode] = useState<string>("");
-  const [csrfToken, setCsrfToken] = useState<string>("");
+  const [code, setCode] = useState<string>('');
+  const [csrfToken, setCsrfToken] = useState<string>('');
   const { showError } = useErrorToast();
 
   useEffect(() => {
@@ -23,19 +23,19 @@ export default function CodeEditor() {
         return;
       }
 
-      const response = await fetch("/api/typecheck", {
-        method: "POST",
+      const response = await fetch('/api/typecheck', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "x-csrf-token": csrfToken,
+          'Content-Type': 'application/json',
+          'x-csrf-token': csrfToken,
         },
-        credentials: "include",
+        credentials: 'include',
         body: JSON.stringify({ code }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "型チェックに失敗しました");
+        throw new Error(errorData.error || '型チェックに失敗しました');
       }
 
       await response.json();
@@ -47,15 +47,15 @@ export default function CodeEditor() {
   return (
     <div>
       <Editor
-        height="90vh"
-        defaultLanguage="typescript"
-        defaultValue="// TypeScript code here"
-        onChange={(value) => setCode(value || "")}
-        theme="vs-dark"
+        height='90vh'
+        defaultLanguage='typescript'
+        defaultValue='// TypeScript code here'
+        onChange={(value) => setCode(value || '')}
+        theme='vs-dark'
         options={{
           minimap: { enabled: false },
           fontSize: 14,
-          lineNumbers: "on",
+          lineNumbers: 'on',
           roundedSelection: false,
           scrollBeyondLastLine: false,
           readOnly: false,
@@ -65,15 +65,15 @@ export default function CodeEditor() {
       <button
         onClick={handleTypeCheck}
         style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          padding: "10px 20px",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          padding: '10px 20px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
         }}
       >
         型チェック実行
