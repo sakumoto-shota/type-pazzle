@@ -16,12 +16,9 @@ export async function playLevel(
   // クッキーをクリア
   await page.context().clearCookies();
   
-  // Playページへ
-  await page.click('text=ゲームを始める');
-  await page.waitForURL('**/play');
-  
-  // レベルを選択
+  // レベルボタンをクリックして直接レベルページへ遷移
   await page.click(`text=Lv${level}`);
+  await page.waitForURL(`**/play?level=${level}`);
   await page.waitForTimeout(2000);
   
   // モナコエディタがロードされるまで待機
