@@ -13,6 +13,9 @@ pre-commit:
         フォーマットエラーが検出されました。
         自動修正するには: yarn prettier --write {staged_files}
         または: ./scripts/auto-fix.sh
+        
+        🤖 Code Reviewerエージェントで自動修正:
+        Task toolを使用して code-reviewer エージェントを起動してください
 
     lint:
       glob: '*.{js,jsx,ts,tsx}'
@@ -23,6 +26,9 @@ pre-commit:
         リントエラーが検出されました。
         自動修正するには: yarn eslint --fix {staged_files}
         または: ./scripts/auto-fix.sh
+        
+        🤖 Code Reviewerエージェントで自動修正:
+        Task toolを使用して code-reviewer エージェントを起動してください
 
     typecheck:
       run: yarn tsc
@@ -30,6 +36,9 @@ pre-commit:
         型エラーが検出されました。
         Claude Codeに修正を依頼することをお勧めします。
         手動修正後: yarn tsc
+        
+        🤖 Code Reviewerエージェントで自動修正:
+        Task toolを使用して code-reviewer エージェントを起動してください
 
     test:
       run: yarn test --passWithNoTests
