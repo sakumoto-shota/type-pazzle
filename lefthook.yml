@@ -15,7 +15,7 @@ pre-commit:
         または: ./scripts/auto-fix.sh
         
         🤖 Code Reviewerエージェントで自動修正:
-        Task toolを使用して code-reviewer エージェントを起動してください
+        claude "/code-reviewer"
 
     lint:
       glob: '*.{js,jsx,ts,tsx}'
@@ -28,7 +28,7 @@ pre-commit:
         または: ./scripts/auto-fix.sh
         
         🤖 Code Reviewerエージェントで自動修正:
-        Task toolを使用して code-reviewer エージェントを起動してください
+        claude "/code-reviewer"
 
     typecheck:
       run: yarn tsc
@@ -38,7 +38,7 @@ pre-commit:
         手動修正後: yarn tsc
         
         🤖 Code Reviewerエージェントで自動修正:
-        Task toolを使用して code-reviewer エージェントを起動してください
+        claude "/code-reviewer"
 
     test:
       run: yarn test --passWithNoTests
