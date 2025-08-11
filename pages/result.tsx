@@ -1,126 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Container,
-  Heading,
-  Text,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-  Alert,
-  AlertIcon,
-  Code,
-  VStack,
-  HStack,
-  Badge,
-  Divider,
-} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Button, Container, Heading, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useScoreAnimation } from '../src/hooks/useScoreAnimation';
-import {
-  getLevel,
-  getScores,
-  setLevel,
-  setScores,
-  getResults,
-  type PuzzleResult,
-} from '../src/utils/progress';
-
-interface ResultDetailProps {
-  results: PuzzleResult[];
-}
-
-const ResultDetail: React.FC<ResultDetailProps> = ({ results }) => {
-  if (!results || results.length === 0) {
-    return null;
-  }
-
-  return (
-    <Box mt={6}>
-      <Heading size='md' mb={4}>
-        問題詳細
-      </Heading>
-      <Accordion allowMultiple>
-        {results.map((result, index) => (
-          <AccordionItem key={result.puzzleIndex}>
-            <h2>
-              <AccordionButton>
-                <HStack flex='1' textAlign='left' spacing={3}>
-                  <Text fontWeight='bold'>問題 {result.puzzleIndex + 1}</Text>
-                  <Badge colorScheme={result.answer ? 'green' : 'red'} variant='solid'>
-                    {result.answer ? '正解 ✓' : '不正解 ✗'}
-                  </Badge>
-                </HStack>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              <VStack align='stretch' spacing={4}>
-                {/* 解説 */}
-                <Alert status='info'>
-                  <AlertIcon />
-                  <Text>{result.description}</Text>
-                </Alert>
-
-                {/* 正解例 */}
-                {result.correctAnswer && (
-                  <Box>
-                    <Text fontWeight='bold' mb={2}>
-                      正解例:
-                    </Text>
-                    <Code
-                      p={3}
-                      display='block'
-                      whiteSpace='pre-wrap'
-                      bg='green.50'
-                      border='1px solid'
-                      borderColor='green.200'
-                      borderRadius='md'
-                    >
-                      {result.correctAnswer}
-                    </Code>
-                  </Box>
-                )}
-
-                {/* ユーザーの回答 */}
-                {result.userAnswer && (
-                  <Box>
-                    <Text fontWeight='bold' mb={2}>
-                      あなたの回答:
-                    </Text>
-                    <Code
-                      p={3}
-                      display='block'
-                      whiteSpace='pre-wrap'
-                      bg={result.answer ? 'green.50' : 'red.50'}
-                      border='1px solid'
-                      borderColor={result.answer ? 'green.200' : 'red.200'}
-                      borderRadius='md'
-                    >
-                      {result.userAnswer}
-                    </Code>
-                  </Box>
-                )}
-
-                {index < results.length - 1 && <Divider />}
-              </VStack>
-            </AccordionPanel>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </Box>
-  );
-};
+import { getLevel, getScores, setLevel, setScores, getResults } from '../src/utils/progress';
 
 export default function ResultPage() {
   const router = useRouter();
   const [finalScore, setFinalScore] = useState(0);
   const [level, setLevelState] = useState<number | null>(null);
-  const [currentResults, setCurrentResults] = useState<PuzzleResult[]>([]);
 
   useEffect(() => {
     // Client-side only cookie reading
@@ -167,17 +55,6 @@ export default function ResultPage() {
     setFinalScore(currentLevel ? (scores[currentLevel - 1] ?? 0) : 0);
     setScores(scores);
     setLevel(currentLevel ?? null);
-
-    // 現在のレベルの詳細結果を設定
-    if (detailedResults && currentLevel) {
-      const levelKey = String(currentLevel);
-      const levelResults = detailedResults[levelKey];
-      if (levelResults) {
-        // パズルインデックス順にソート
-        const sortedResults = [...levelResults].sort((a, b) => a.puzzleIndex - b.puzzleIndex);
-        setCurrentResults(sortedResults);
-      }
-    }
   }, [router.query]);
 
   const animatedScore = useScoreAnimation(finalScore);
@@ -199,15 +76,9 @@ export default function ResultPage() {
         <Text fontSize='4xl' fontWeight='bold' mb={4} textAlign='center'>
           {animatedScore} / 100
         </Text>
-
-        {/* 詳細表示コンポーネント */}
-        {level && currentResults.length > 0 && <ResultDetail results={currentResults} />}
-
-        <Box mt={6} textAlign='center'>
-          <Button colorScheme='teal' onClick={handleNext}>
-            TOPへ
-          </Button>
-        </Box>
+        <Button colorScheme='teal' onClick={handleNext}>
+          TOPへ
+        </Button>
       </Container>
     </>
   );

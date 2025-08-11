@@ -80,9 +80,7 @@ export const resetProgress = (): void => {
 export interface PuzzleResult {
   answer: boolean;
   puzzleIndex: number;
-  description: string; // 解説を必須に変更
-  userAnswer?: string; // ユーザーの回答を追加
-  correctAnswer?: string; // 正解を追加
+  description?: string;
 }
 
 export interface LevelResults {

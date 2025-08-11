@@ -13,8 +13,8 @@ export default [
       'out/',
       'next.config.js',
       'e2e/**/*',
-      'playwright.config.ts',
-    ],
+      'playwright.config.ts'
+    ]
   },
   eslint.configs.recommended,
   {
@@ -23,7 +23,7 @@ export default [
       sourceType: 'module',
       parser: tsParser,
       parserOptions: {
-        project: './tsconfig.json',
+        project: './tsconfig.json'
       },
       globals: {
         document: 'readonly',
@@ -33,15 +33,15 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tseslint,
-      '@next/next': nextPlugin,
+      '@next/next': nextPlugin
     },
     rules: {
       'no-console': 'warn',
-      'spaced-comment': ['warn', 'always', { markers: ['/'] }],
-      eqeqeq: ['error', 'allow-null'],
+      'spaced-comment': ['warn', 'always', { 'markers': ['/'] }],
+      'eqeqeq': ['error', 'allow-null'],
       '@typescript-eslint/no-extra-semi': 'warn',
       '@typescript-eslint/no-explicit-any': 'error',
-    },
+    }
   },
-  prettierConfig,
-];
+  prettierConfig
+]; 

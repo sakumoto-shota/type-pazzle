@@ -13,10 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "tsc": "tsc --noEmit",
-    "prepare": "lefthook install",
-    "fix": "./scripts/auto-fix.sh",
-    "fix:claude": "./scripts/claude-auto-fix.sh",
-    "pre-commit": "yarn format:check && yarn lint && yarn tsc && yarn test"
+    "prepare": "lefthook install"
   },
   "keywords": [],
   "author": "",
@@ -37,7 +34,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@playwright/test": "^1.54.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^14.3.1",
     "@types/jsdom": "^21.1.6",
