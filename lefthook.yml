@@ -8,18 +8,40 @@ pre-commit:
       glob: '*.{js,jsx,ts,tsx,json,md}'
       run: yarn prettier --check {staged_files}
       stage_fixed: false
+      # エラー時の自動修正を有効化
+      fail_text: |
+        フォーマットエラーが検出されました。
+        自動修正するには: yarn prettier --write {staged_files}
+        または: ./scripts/auto-fix.sh
 
     lint:
       glob: '*.{js,jsx,ts,tsx}'
       exclude: '*.test.{ts,tsx}|*.spec.{ts,tsx}'
       run: yarn eslint {staged_files}
       stage_fixed: false
+      fail_text: |
+        リントエラーが検出されました。
+        自動修正するには: yarn eslint --fix {staged_files}
+        または: ./scripts/auto-fix.sh
 
     typecheck:
       run: yarn tsc
+      fail_text: |
+        型エラーが検出されました。
+        Claude Codeに修正を依頼することをお勧めします。
+        手動修正後: yarn tsc
+
+    test:
+      run: yarn test --passWithNoTests
+      fail_text: |
+        テストが失敗しました。
+        詳細を確認して修正してください。
 
 pre-push:
   parallel: false
   commands:
     build:
       run: yarn build
+      fail_text: |
+        ビルドが失敗しました。
+        エラーを修正してから再度プッシュしてください。

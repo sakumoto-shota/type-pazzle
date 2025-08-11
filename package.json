@@ -13,7 +13,10 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "tsc": "tsc --noEmit",
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "fix": "./scripts/auto-fix.sh",
+    "fix:claude": "./scripts/claude-auto-fix.sh",
+    "pre-commit": "yarn format:check && yarn lint && yarn tsc && yarn test"
   },
   "keywords": [],
   "author": "",
