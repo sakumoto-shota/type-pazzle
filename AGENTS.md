@@ -1,5 +1,58 @@
 # 🤖 コントリビューターガイド（for AI Agents / Codex）
 
+# Repository Guidelines
+
+## Project Structure & Modules
+
+- `pages/`: Next.js routes (`index.tsx`, `play.tsx`, `result.tsx`, API routes under `pages/api/`).
+- `components/` and `src/components/`: Reusable UI (e.g., `TypeScriptEditor.tsx`, `Editor.tsx`).
+- `src/hooks/`: React hooks (tests colocated as `*.test.tsx`).
+- `src/utils/`: Utilities with focused unit tests (e.g., `csrf.ts`, `progress.ts`).
+- `__tests__/`, `middleware.test.ts`: App-level/unit tests.
+- `e2e/`: Playwright specs and helpers.
+- Config: `eslint.config.mjs`, `vitest.config.ts`, `vitest.setup.ts`, `playwright.config.ts`, `tsconfig.json`.
+
+## Build, Test, and Development
+
+- `yarn dev`: Run the Next.js dev server.
+- `yarn build` / `yarn start`: Production build and server start.
+- `yarn lint`: Lint all files using ESLint config.
+- `yarn tsc`: Type-check without emitting files.
+- `yarn test` / `yarn test:watch`: Run unit tests with Vitest.
+- `yarn test:coverage`: Generate coverage report.
+- `yarn format` / `yarn format:check`: Format with Prettier or check only.
+  Node 20.18+ is required (see `package.json:engines`). Pre-commit runs format, lint, type-check, and tests via Lefthook.
+
+## Coding Style & Naming
+
+- TypeScript everywhere; no `any`, no `console` output.
+- Explicit return types; avoid non-null assertions.
+- Prefer `const`; 2-space indentation; PascalCase components, camelCase functions/vars.
+- Keep modules small and testable; colocate `*.test.ts[x]` next to the unit.
+
+## Testing Guidelines
+
+- Frameworks: Vitest + Testing Library for unit/UI; Playwright for E2E.
+- File names: `*.test.ts` / `*.test.tsx`; E2E: `e2e/*.spec.ts`.
+- Aim for meaningful coverage on `src/utils`, hooks, and critical pages; run `yarn test:coverage` locally.
+
+## Commit & Pull Requests
+
+- Commits: `feat:`, `fix:`, `test:`, `chore:`, `docs:`, `style:`, `refactor:`.
+- PR title: `[type-puzzle] <short summary>`.
+- PRs include: clear description, linked issues, before/after screenshots for UI, and test notes.
+
+## Security & Middleware
+
+- CSRF: Changes to `middleware.ts` must keep CSRF checks intact; update `middleware.test.ts` accordingly.
+- Avoid leaking sensitive data; validate and narrow types at module boundaries.
+
+## Agent-Specific Notes
+
+- Don’t run `npm install`/`npx`; declare deps in `package.json` only.
+- Don’t run `next build` or execute tests in CI locally; add function-level tests instead.
+- Generate independent, typed functions with minimal surface area.
+
 ## 実行制約（for AI agents）
 
 Codex などのオフライン実行環境では以下の制限を守ってください：
