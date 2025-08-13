@@ -16,8 +16,8 @@
           "explanation": "greetは文字列を返す関数型を指定します。"
         },
         {
-          "code": "type Pair<T> = ???;\nconst pair: Pair<number> = [1, 2];",
-          "explanation": "ジェネリック型Pairは同種の2要素のタプルを表します。"
+          "code": "type Pair = ???;\nconst pair: Pair = [1, 2];",
+          "explanation": "Pair型は要素数が2つで両方がnumber型であるタプルを表します。"
         },
         {
           "code": "interface Animal { name: string }\ninterface Dog extends ??? { bark(): void }",

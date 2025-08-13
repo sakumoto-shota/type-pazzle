@@ -4,7 +4,7 @@ export const ANSWERS = {
     'type User = { name: string; age: number };\nconst u: User = { name: "Taro", age: 20 };',
     'type Point = { x: number; y: number };\nconst p: Point = { x: 1, y: 2 };',
     'const greet: (name: string) => string = (name: string) => `Hello, ${name}`;',
-    'type Pair<T> = [T, T];\nconst pair: Pair<number> = [1, 2];',
+    'type Pair = [number, number];\nconst pair: Pair = [1, 2];',
     'interface Animal { name: string }\ninterface Dog extends Animal { bark(): void }',
   ],
   level2: [
